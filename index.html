@@ -1,259 +1,373 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kompas polityczny</title>
+  <title>Kompas polityczny · elegant</title>
   <style>
+    /* ========== RESET & BAZA ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* systemowe zmienne + tryb jasny (domyślny) */
     :root {
-      --bg: #f2f2f2;
-      --ink: #111111;
-      --muted: #666666;
-      --line: #111111;
-      --panel: #ffffff;
+      --bg-page: #f0f2f5;
+      --surface: #ffffff;
+      --surface-soft: #fafafc;
+      --ink: #11181c;
+      --ink-light: #3c4a54;
+      --border: #e2e8f0;
+      --border-focus: #2c7da0;
+      --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+      --accent: #2c7da0;
+      --accent-soft: #eef6fc;
+      --transition: all 0.2s ease;
       --red: #ff1744;
       --blue: #006eff;
       --yellow: #ffe500;
       --black: #111111;
-      --accent: #00d1ff;
     }
 
-    * { box-sizing: border-box; }
+    /* tryb ciemny */
+    body.dark {
+      --bg-page: #121212;
+      --surface: #1e1e2a;
+      --surface-soft: #252530;
+      --ink: #edf2f7;
+      --ink-light: #a0aec0;
+      --border: #2d3748;
+      --border-focus: #5b9fc1;
+      --accent: #5b9fc1;
+      --accent-soft: #1e2a32;
+      --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 12px 24px -8px rgba(0, 0, 0, 0.6);
+    }
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg-page);
       color: var(--ink);
-      background: var(--bg);
-      line-height: 1.45;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      line-height: 1.5;
+      transition: background 0.2s, color 0.2s;
+      scroll-behavior: smooth;
     }
 
+    /* ========== GŁÓWNY KONTENER ========== */
     .app {
-      width: min(1180px, calc(100% - 32px));
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 28px 0 36px;
+      padding: 2rem 1.5rem 3rem;
     }
 
+    /* ========== HEADER ========== */
     header {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 24px;
-      border-bottom: 4px solid var(--line);
-      padding-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .title-wrap {
+      flex: 1;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(2rem, 5vw, 4.4rem);
-      line-height: 0.95;
-      text-transform: uppercase;
-      letter-spacing: 0;
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
     }
 
     .lead {
-      max-width: 760px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
+      max-width: 680px;
+      margin-top: 0.5rem;
+      color: var(--ink-light);
+      font-size: 0.95rem;
     }
 
+    /* przycisk motywu */
+    .theme-toggle {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 60px;
+      padding: 0.5rem 1rem;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      backdrop-filter: blur(4px);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .theme-toggle:hover {
+      background: var(--surface-soft);
+      transform: scale(0.97);
+      border-color: var(--accent);
+    }
+
+    /* ========== LAYOUT 2 KOLUMNY ========== */
     .layout {
       display: grid;
-      grid-template-columns: minmax(320px, 1fr) minmax(330px, 520px);
-      gap: 22px;
+      grid-template-columns: minmax(340px, 1fr) minmax(340px, 520px);
+      gap: 2rem;
       align-items: start;
     }
 
-    .controls, .results, .form-panel {
-      background: var(--panel);
-      border: 3px solid var(--line);
+    /* panele – subtelne zaokrąglenia + cień */
+    .controls, .results, .form-panel, .compass-wrap {
+      background: var(--surface);
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: background 0.2s, border 0.2s, box-shadow 0.2s;
     }
 
     .controls {
-      display: grid;
-      gap: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
+      padding: 1.4rem;
+      margin-bottom: 1.6rem;
     }
 
+    .form-panel {
+      padding: 1.5rem;
+    }
+
+    /* base64 box */
     .base64-box {
       display: grid;
-      gap: 8px;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
     }
 
     .base64-box label {
-      font-size: 0.8rem;
-      font-weight: 900;
+      font-weight: 600;
+      font-size: 0.85rem;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink-light);
     }
 
     textarea {
       width: 100%;
-      min-height: 82px;
-      border: 2px solid var(--line);
-      padding: 8px;
-      font: inherit;
-      background: #ffffff;
+      min-height: 88px;
+      padding: 12px 14px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 20px;
       color: var(--ink);
-      border-radius: 0;
       resize: vertical;
+      transition: var(--transition);
     }
 
     textarea:focus {
-      outline: 3px solid var(--accent);
-      outline-offset: 0;
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
     }
 
     .base64-status {
-      min-height: 18px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--ink-light);
+    }
+
+    .base64-status.error {
+      color: #e5484d;
+    }
+
+    /* przełącznik trybu wagowego */
+    .mode-switch {
+      display: flex;
+      background: var(--surface-soft);
+      border-radius: 60px;
+      padding: 4px;
+      margin: 1rem 0 1.2rem;
+      border: 1px solid var(--border);
+    }
+
+    .mode-switch button {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--ink-light);
+      transition: var(--transition);
+    }
+
+    .mode-switch button.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       font-weight: 700;
     }
 
-    .mode-switch {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 2px solid var(--line);
-    }
-
-    .mode-switch button, .actions button {
-      appearance: none;
-      border: 0;
-      background: #ffffff;
-      color: var(--ink);
-      cursor: pointer;
-      font: inherit;
-      font-weight: 800;
-      text-transform: uppercase;
-      min-height: 44px;
-      border-radius: 0;
-    }
-
-    .mode-switch button + button { border-left: 2px solid var(--line); }
-    .mode-switch button.active { background: var(--ink); color: #ffffff; }
-
+    /* przyciski akcji */
     .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      display: flex;
+      gap: 14px;
     }
 
-    .actions button { border: 3px solid var(--line); }
-    .actions button.primary { background: var(--accent); }
-    .actions button:hover, .mode-switch button:hover { filter: brightness(0.94); }
-
-    .form-panel { padding: 16px; }
-
-    .axis-title {
-      margin: 4px 0 12px;
-      padding: 8px 0;
-      border-top: 3px solid var(--line);
-      border-bottom: 3px solid var(--line);
-      font-size: 1.1rem;
+    .actions button {
+      flex: 1;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 12px 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
       text-transform: uppercase;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--ink);
     }
 
-    .axis-title:first-child { margin-top: 0; }
+    .actions button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .actions button:hover {
+      transform: translateY(-2px);
+      filter: brightness(0.96);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* PARY PYTAŃ */
+    .axis-title {
+      margin: 1.5rem 0 1rem;
+      padding: 0 0 0.6rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      border-bottom: 2px solid var(--border);
+      color: var(--ink);
+    }
+
+    .axis-title:first-of-type {
+      margin-top: 0;
+    }
 
     .pair {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      gap: 10px;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
       align-items: end;
-      padding: 12px 0;
-      border-bottom: 1px solid #cccccc;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .pair:last-child { border-bottom: 0; }
+    .pair:last-child {
+      border-bottom: none;
+    }
 
     label {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 6px;
-      min-width: 0;
-      font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 0.85rem;
     }
 
     .direction {
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-weight: 800;
+      font-size: 0.7rem;
+      font-weight: 500;
       text-transform: uppercase;
+      color: var(--ink-light);
     }
 
     input {
       width: 100%;
-      min-height: 40px;
-      border: 2px solid var(--line);
-      padding: 8px;
-      font: inherit;
-      background: #ffffff;
+      padding: 10px 12px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: var(--transition);
       color: var(--ink);
-      border-radius: 0;
     }
 
     input:focus {
-      outline: 3px solid var(--accent);
-      outline-offset: 0;
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
     }
 
     .versus {
-      align-self: center;
-      font-weight: 900;
-      color: var(--muted);
-      padding-bottom: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      background: var(--surface-soft);
+      padding: 5px 10px;
+      border-radius: 32px;
+      text-align: center;
     }
 
-    .stage {
-      position: sticky;
-      top: 16px;
-      display: grid;
-      gap: 16px;
-    }
-
+    /* KOMPAS – bez zmian stylu planszy, tylko delikatna ramka i padding */
     .compass-wrap {
-      background: var(--panel);
-      border: 3px solid var(--line);
-      padding: 14px 42px;
+      padding: 1.2rem 1rem;
     }
 
     .compass-frame {
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      grid-template-rows: auto minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
     }
 
     .compass-outer-label {
-      font-size: 0.76rem;
-      font-weight: 900;
-      text-align: center;
+      font-weight: 800;
+      font-size: 0.75rem;
       text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--ink-light);
     }
 
     .compass-outer-label.top,
     .compass-outer-label.bottom {
-      grid-column: 2;
+      text-align: center;
     }
 
     .compass-outer-label.left,
     .compass-outer-label.right {
       writing-mode: vertical-rl;
-      min-height: 90px;
+      text-orientation: mixed;
     }
 
     .compass-outer-label.left {
       transform: rotate(180deg);
     }
 
+    /* RZECZYWISTY KOMPAS – absolutnie NIE ZMIENIAMY JEGO WIZUALIZACJI (kolory, kratka, podział) */
     .compass {
       position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
-      border: 4px solid var(--line);
+      border: 4px solid var(--ink);
       overflow: hidden;
       background:
         linear-gradient(to right, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
@@ -267,10 +381,11 @@
       background-repeat: repeat, repeat, repeat, repeat, no-repeat, no-repeat;
     }
 
-    .compass::before, .compass::after {
+    .compass::before,
+    .compass::after {
       content: "";
       position: absolute;
-      background: var(--line);
+      background: var(--ink);
       z-index: 4;
     }
 
@@ -293,12 +408,13 @@
     .tick {
       position: absolute;
       z-index: 5;
-      background: #ffffff;
-      border: 2px solid var(--line);
-      padding: 2px 5px;
-      font-size: 0.72rem;
+      background: var(--surface);
+      border: 2px solid var(--ink);
+      padding: 2px 6px;
+      font-size: 0.7rem;
       font-weight: 900;
-      line-height: 1;
+      border-radius: 20px;
+      color: var(--ink);
     }
 
     .tick.x-min { left: 4px; top: calc(50% + 8px); }
@@ -312,441 +428,464 @@
       left: 50%;
       top: 50%;
       z-index: 8;
-      width: 22px;
-      height: 22px;
-      border: 4px solid #ffffff;
-      background: #00ff66;
-      box-shadow: 0 0 0 3px #111111;
+      width: 24px;
+      height: 24px;
+      border: 3px solid #ffffff;
+      background: #00ff88;
+      box-shadow: 0 0 0 3px var(--ink);
       transform: translate(-50%, -50%);
-      transition: left 260ms ease, top 260ms ease;
+      transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 0px;
     }
 
-    .results { padding: 16px; }
+    /* Panel wyników */
+    .results {
+      padding: 1.5rem;
+    }
 
     .result-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 1rem;
     }
 
     .metric {
-      border: 2px solid var(--line);
-      padding: 10px;
-      min-height: 78px;
-      background: #ffffff;
+      background: var(--surface-soft);
+      border-radius: 24px;
+      padding: 1rem;
+      border: 1px solid var(--border);
     }
 
     .metric span {
-      display: block;
-      color: var(--muted);
-      font-size: 0.76rem;
-      font-weight: 900;
+      font-size: 0.7rem;
       text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--ink-light);
     }
 
     .metric strong {
       display: block;
-      margin-top: 6px;
-      font-size: clamp(1.1rem, 3vw, 1.8rem);
-      line-height: 1;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-top: 0.5rem;
+      line-height: 1.2;
     }
 
     .summary {
-      margin: 12px 0 0;
-      color: var(--muted);
-      font-weight: 700;
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-weight: 500;
+      color: var(--ink-light);
     }
 
-    .error { color: #b00020; }
+    .error {
+      color: #e5484d;
+    }
 
+    /* responsywność */
     @media (max-width: 860px) {
-      .layout { grid-template-columns: 1fr; }
-      .stage { position: static; }
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .app {
+        padding: 1.2rem;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
 
     @media (max-width: 560px) {
-      .app {
-        width: min(100% - 20px, 1180px);
-        padding-top: 18px;
+      .pair {
+        grid-template-columns: 1fr;
+        gap: 12px;
       }
-
-      .pair, .actions, .result-grid { grid-template-columns: 1fr; }
-      .versus { padding: 0; text-align: center; }
-      .compass-wrap { padding: 12px 26px; }
+      .versus {
+        display: inline-block;
+        width: fit-content;
+        margin: 0 auto;
+      }
+      .actions {
+        flex-direction: column;
+      }
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+      .theme-toggle {
+        font-size: 1rem;
+        padding: 0.4rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <header>
+<main class="app">
+  <header>
+    <div class="title-wrap">
       <h1>Kompas polityczny</h1>
-      <p class="lead">Wpisz wartości od 0 do 100. Pełna para jest liczona jak przeciąganie liny: program bierze wyłącznie różnicę między stronami, a puste lub niepełne pary pomija.</p>
-    </header>
+      <p class="lead">Wprowadź wartości 0–100. Każda para działa jak przeciąganie liny – liczy się różnica między stronami. Puste lub niekompletne pary są pomijane.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw jasny/ciemny">🌙 Tryb ciemny</button>
+  </header>
 
-    <section class="layout">
-      <div>
-        <section class="controls" aria-label="Sterowanie">
-          <div class="base64-box">
-            <label for="base64Input">Kod Base64 z wynikami</label>
-            <textarea id="base64Input" placeholder="Wklej kod Base64"></textarea>
-            <p class="base64-status" id="base64Status"></p>
+  <section class="layout">
+    <div>
+      <section class="controls" aria-label="Sterowanie">
+        <div class="base64-box">
+          <label for="base64Input">📎 Kod Base64 z wynikami</label>
+          <textarea id="base64Input" placeholder="Wklej kod Base64"></textarea>
+          <p class="base64-status" id="base64Status"></p>
+        </div>
+
+        <div class="mode-switch" role="group" aria-label="Tryb obliczeń">
+          <button type="button" data-mode="equal">Jednakowe wagi</button>
+          <button type="button" class="active" data-mode="weighted">Tryb wagowy</button>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" id="calculateBtn">⟳ Oblicz wynik</button>
+          <button type="button" id="resetBtn">🗑 Zresetuj</button>
+        </div>
+      </section>
+
+      <form class="form-panel" id="valuesForm">
+        <h2 class="axis-title">⚖️ Oś X: ekonomiczna</h2>
+        <div id="xPairs"></div>
+        <h2 class="axis-title">🏛️ Oś Y: społeczno-instytucjonalna</h2>
+        <div id="yPairs"></div>
+      </form>
+    </div>
+
+    <aside class="stage">
+      <section class="compass-wrap" aria-label="Kompas polityczny">
+        <div class="compass-frame">
+          <div></div>
+          <div class="compass-outer-label top">Autonomia</div>
+          <div></div>
+          <div class="compass-outer-label left">Socjalizm</div>
+          <div class="compass" id="compass">
+            <span class="tick x-min">-10</span>
+            <span class="tick x-max">+10</span>
+            <span class="tick y-min">-10</span>
+            <span class="tick y-max">+10</span>
+            <span class="tick center">0</span>
+            <div class="marker" id="marker" title="Pozycja użytkownika"></div>
           </div>
-          <div class="mode-switch" role="group" aria-label="Tryb obliczeń">
-            <button type="button" data-mode="equal">Jednakowe wagi</button>
-            <button type="button" class="active" data-mode="weighted">Tryb wagowy</button>
-          </div>
-          <div class="actions">
-            <button type="button" class="primary" id="calculateBtn">Oblicz wynik</button>
-            <button type="button" id="resetBtn">Zresetuj wynik</button>
-          </div>
-        </section>
+          <div class="compass-outer-label right">Kapitalizm</div>
+          <div></div>
+          <div class="compass-outer-label bottom">Heteronomia</div>
+          <div></div>
+        </div>
+      </section>
 
-        <form class="form-panel" id="valuesForm">
-          <h2 class="axis-title">Oś X: ekonomiczna</h2>
-          <div id="xPairs"></div>
-          <h2 class="axis-title">Oś Y: społeczno-instytucjonalna</h2>
-          <div id="yPairs"></div>
-        </form>
-      </div>
+      <section class="results" aria-live="polite">
+        <div class="result-grid">
+          <div class="metric"><span>📐 Współrzędna X</span><strong id="xResult">0.00</strong></div>
+          <div class="metric"><span>📏 Współrzędna Y</span><strong id="yResult">0.00</strong></div>
+          <div class="metric"><span>⚙️ Tryb</span><strong id="modeResult">Jednakowe</strong></div>
+          <div class="metric"><span>🔗 Aktywne pary</span><strong id="activePairsResult">0</strong></div>
+        </div>
+        <p class="summary" id="positionResult">📍 Położenie: środek kompasu.</p>
+      </section>
+    </aside>
+  </section>
+</main>
 
-      <aside class="stage">
-        <section class="compass-wrap" aria-label="Kompas polityczny">
-          <div class="compass-frame">
-            <div></div>
-            <div class="compass-outer-label top">Autonomia</div>
-            <div></div>
-            <div class="compass-outer-label left">Socjalizm</div>
-            <div class="compass" id="compass">
-              <span class="tick x-min">-10</span>
-              <span class="tick x-max">+10</span>
-              <span class="tick y-min">-10</span>
-              <span class="tick y-max">+10</span>
-              <span class="tick center">0</span>
-              <div class="marker" id="marker" title="Pozycja użytkownika"></div>
-            </div>
-            <div class="compass-outer-label right">Kapitalizm</div>
-            <div></div>
-            <div class="compass-outer-label bottom">Heteronomia</div>
-            <div></div>
-          </div>
-        </section>
+<script>
+  // ---------- DANE (oryginalne pary) ----------
+  const pairs = [
+    { axis: "x", positiveLabel: "Własność prywatna", positiveSide: "prawo", negativeLabel: "Własność kolektywna", negativeSide: "lewo", weight: 1.5, aliases: ["Własność kolektywa"] },
+    { axis: "x", positiveLabel: "Rynek", positiveSide: "prawo", negativeLabel: "Planowanie", negativeSide: "lewo", weight: 1 },
+    { axis: "y", positiveLabel: "Regulacja instytucjonalna", positiveSide: "góra", negativeLabel: "Samoregulacja", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Heteronomia", positiveSide: "góra", negativeLabel: "Autonomia", negativeSide: "dół", weight: 2 },
+    { axis: "y", positiveLabel: "Organicyzm", positiveSide: "góra", negativeLabel: "Kontraktualizm", negativeSide: "dół", weight: 1.5 },
+    { axis: "y", positiveLabel: "Obowiązkowość wspólnoty", positiveSide: "góra", negativeLabel: "Dobrowolność wspólnoty", negativeSide: "dół", weight: 1.5 },
+    { axis: "y", positiveLabel: "Cenzura", positiveSide: "góra", negativeLabel: "Wolność ekspresji", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Etatyzm", positiveSide: "góra", negativeLabel: "Samoorganizacja", negativeSide: "dół", weight: 1.75 },
+    { axis: "y", positiveLabel: "Centralizacja", positiveSide: "góra", negativeLabel: "Decentralizacja", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Absolutyzm władzy", positiveSide: "góra", negativeLabel: "Ograniczenie władzy", negativeSide: "dół", weight: 1.75 },
+    { axis: "y", positiveLabel: "Sakralizacja autorytetu", positiveSide: "góra", negativeLabel: "Desakralizacja autorytetu", negativeSide: "dół", weight: 1.75 },
+    { axis: "y", positiveLabel: "Uniformizacja norm", positiveSide: "góra", negativeLabel: "Różnorodność norm", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Kontrola granic", positiveSide: "góra", negativeLabel: "Minimalizacja granic", negativeSide: "dół", weight: 0.5 }
+  ];
 
-        <section class="results" aria-live="polite">
-          <div class="result-grid">
-            <div class="metric"><span>Współrzędna X</span><strong id="xResult">0.00</strong></div>
-            <div class="metric"><span>Współrzędna Y</span><strong id="yResult">0.00</strong></div>
-            <div class="metric"><span>Tryb</span><strong id="modeResult">Jednakowe</strong></div>
-            <div class="metric"><span>Aktywne pary</span><strong id="activePairsResult">0</strong></div>
-          </div>
-          <p class="summary" id="positionResult">Położenie: środek kompasu.</p>
-        </section>
-      </aside>
-    </section>
-  </main>
+  // ========== STAN APLIKACJI ==========
+  const state = { mode: "weighted", x: 0, y: 0, activePairs: 0 };
 
-  <script>
-    // Edytuj tę tablicę, aby zmienić pary, osie, kierunki lub wagi.
-    const pairs = [
-      { axis: "x", positiveLabel: "Własność prywatna", positiveSide: "prawo", negativeLabel: "Własność kolektywna", negativeSide: "lewo", weight: 1.5, aliases: ["Własność kolektywa"] },
-      { axis: "x", positiveLabel: "Rynek", positiveSide: "prawo", negativeLabel: "Planowanie", negativeSide: "lewo", weight: 1 },
-      { axis: "y", positiveLabel: "Regulacja instytucjonalna", positiveSide: "góra", negativeLabel: "Samoregulacja", negativeSide: "dół", weight: 1 },
-      { axis: "y", positiveLabel: "Heteronomia", positiveSide: "góra", negativeLabel: "Autonomia", negativeSide: "dół", weight: 2 },
-      { axis: "y", positiveLabel: "Organicyzm", positiveSide: "góra", negativeLabel: "Kontraktualizm", negativeSide: "dół", weight: 1.5 },
-      { axis: "y", positiveLabel: "Obowiązkowość wspólnoty", positiveSide: "góra", negativeLabel: "Dobrowolność wspólnoty", negativeSide: "dół", weight: 1.5 },
-      { axis: "y", positiveLabel: "Cenzura", positiveSide: "góra", negativeLabel: "Wolność ekspresji", negativeSide: "dół", weight: 1 },
-      { axis: "y", positiveLabel: "Etatyzm", positiveSide: "góra", negativeLabel: "Samoorganizacja", negativeSide: "dół", weight: 1.75 },
-      { axis: "y", positiveLabel: "Centralizacja", positiveSide: "góra", negativeLabel: "Decentralizacja", negativeSide: "dół", weight: 1 },
-      { axis: "y", positiveLabel: "Absolutyzm władzy", positiveSide: "góra", negativeLabel: "Ograniczenie władzy", negativeSide: "dół", weight: 1.75 },
-      { axis: "y", positiveLabel: "Sakralizacja autorytetu", positiveSide: "góra", negativeLabel: "Desakralizacja autorytetu", negativeSide: "dół", weight: 1.75 },
-      { axis: "y", positiveLabel: "Uniformizacja norm", positiveSide: "góra", negativeLabel: "Różnorodność norm", negativeSide: "dół", weight: 1 },
-      { axis: "y", positiveLabel: "Kontrola granic", positiveSide: "góra", negativeLabel: "Minimalizacja granic", negativeSide: "dół", weight: 0.5 }
-    ];
+  // DOM elementy
+  const form = document.querySelector("#valuesForm");
+  const base64Input = document.querySelector("#base64Input");
+  const base64Status = document.querySelector("#base64Status");
+  const xPairsContainer = document.querySelector("#xPairs");
+  const yPairsContainer = document.querySelector("#yPairs");
+  const marker = document.querySelector("#marker");
+  const xResult = document.querySelector("#xResult");
+  const yResult = document.querySelector("#yResult");
+  const modeResult = document.querySelector("#modeResult");
+  const activePairsResult = document.querySelector("#activePairsResult");
+  const positionResult = document.querySelector("#positionResult");
+  const modeButtons = document.querySelectorAll("[data-mode]");
 
-    const state = { mode: "weighted", x: 0, y: 0, activePairs: 0 };
+  // ---------- RENDER PAR ----------
+  function renderPairs() {
+    pairs.forEach((pair, index) => {
+      pair.id = `pair-${index}`;
+      const weightLabel = pair.weight !== 1 ? ` | waga ${pair.weight}` : " | waga 1";
+      const html = `
+        <div class="pair">
+          <label>
+            <span>${pair.negativeLabel}</span>
+            <span class="direction">${pair.negativeSide}${weightLabel}</span>
+            <input type="number" min="0" max="100" step="1" inputmode="numeric" data-pair="${pair.id}" data-side="negative" aria-label="${pair.negativeLabel}">
+          </label>
+          <span class="versus">⇄</span>
+          <label>
+            <span>${pair.positiveLabel}</span>
+            <span class="direction">${pair.positiveSide}${weightLabel}</span>
+            <input type="number" min="0" max="100" step="1" inputmode="numeric" data-pair="${pair.id}" data-side="positive" aria-label="${pair.positiveLabel}">
+          </label>
+        </div>
+      `;
+      if (pair.axis === "x") xPairsContainer.insertAdjacentHTML("beforeend", html);
+      if (pair.axis === "y") yPairsContainer.insertAdjacentHTML("beforeend", html);
+    });
+  }
 
-    const form = document.querySelector("#valuesForm");
-    const base64Input = document.querySelector("#base64Input");
-    const base64Status = document.querySelector("#base64Status");
-    const xPairsContainer = document.querySelector("#xPairs");
-    const yPairsContainer = document.querySelector("#yPairs");
-    const marker = document.querySelector("#marker");
-    const xResult = document.querySelector("#xResult");
-    const yResult = document.querySelector("#yResult");
-    const modeResult = document.querySelector("#modeResult");
-    const activePairsResult = document.querySelector("#activePairsResult");
-    const positionResult = document.querySelector("#positionResult");
-    const modeButtons = document.querySelectorAll("[data-mode]");
+  function parsePairValue(pairId, side) {
+    const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
+    const rawValue = input.value.trim();
+    if (rawValue === "") return null;
+    const value = Number(rawValue);
+    if (!Number.isFinite(value)) return null;
+    return Math.min(100, Math.max(0, value));
+  }
 
-    function renderPairs() {
-      pairs.forEach((pair, index) => {
-        pair.id = `pair-${index}`;
-        const weightLabel = pair.weight !== 1 ? ` | waga ${pair.weight}` : " | waga 1";
-        const html = `
-          <div class="pair">
-            <label>
-              <span>${pair.negativeLabel}</span>
-              <span class="direction">${pair.negativeSide}${weightLabel}</span>
-              <input type="number" min="0" max="100" step="1" inputmode="numeric" data-pair="${pair.id}" data-side="negative" aria-label="${pair.negativeLabel}">
-            </label>
-            <span class="versus">A-B</span>
-            <label>
-              <span>${pair.positiveLabel}</span>
-              <span class="direction">${pair.positiveSide}${weightLabel}</span>
-              <input type="number" min="0" max="100" step="1" inputmode="numeric" data-pair="${pair.id}" data-side="positive" aria-label="${pair.positiveLabel}">
-            </label>
-          </div>
-        `;
+  function setPairInput(pairId, side, value) {
+    const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
+    input.value = String(Math.min(100, Math.max(0, value)));
+  }
 
-        if (pair.axis === "x") xPairsContainer.insertAdjacentHTML("beforeend", html);
-        if (pair.axis === "y") yPairsContainer.insertAdjacentHTML("beforeend", html);
-      });
+  function syncOppositeValue(input) {
+    const rawValue = input.value.trim();
+    if (rawValue === "") return;
+    const value = Number(rawValue);
+    if (!Number.isFinite(value)) return;
+    const clamped = Math.min(100, Math.max(0, value));
+    const oppositeSide = input.dataset.side === "positive" ? "negative" : "positive";
+    const oppositeInput = form.querySelector(`[data-pair="${input.dataset.pair}"][data-side="${oppositeSide}"]`);
+    input.value = String(clamped);
+    oppositeInput.value = String(100 - clamped);
+  }
+
+  // BASE64 helpers
+  function decodeBase64Text(base64Value) {
+    const cleaned = base64Value.replace(/\s+/g, "");
+    const binary = atob(cleaned);
+    const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0));
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+
+  function normalizeLabel(label) {
+    return label.trim().toLowerCase().replace(/\s+/g, " ");
+  }
+
+  function parseAxisValues(decodedText) {
+    const values = new Map();
+    const pattern = /([^();]+?)\s*\(\s*(-?\d+(?:[.,]\d+)?)\s*\)/g;
+    let match;
+    while ((match = pattern.exec(decodedText)) !== null) {
+      const label = normalizeLabel(match[1]);
+      const num = Number(match[2].replace(",", "."));
+      if (Number.isFinite(num)) values.set(label, Math.min(100, Math.max(0, num)));
     }
+    return values;
+  }
 
-    function normalizeLabel(label) {
-      return label.trim().toLowerCase().replace(/\s+/g, " ");
-    }
+  function findParsedValue(parsedMap, label) {
+    return parsedMap.get(normalizeLabel(label));
+  }
 
-    function parsePairValue(pairId, side) {
-      const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
-      const rawValue = input.value.trim();
-      if (rawValue === "") return null;
-
-      const value = Number(rawValue);
-      if (!Number.isFinite(value)) return null;
-
-      return Math.min(100, Math.max(0, value));
-    }
-
-    function setPairInput(pairId, side, value) {
-      const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
-      input.value = String(Math.min(100, Math.max(0, value)));
-    }
-
-    function syncOppositeValue(input) {
-      const rawValue = input.value.trim();
-      if (rawValue === "") return;
-
-      const value = Number(rawValue);
-      if (!Number.isFinite(value)) return;
-
-      const clampedValue = Math.min(100, Math.max(0, value));
-      const oppositeSide = input.dataset.side === "positive" ? "negative" : "positive";
-      const oppositeInput = form.querySelector(`[data-pair="${input.dataset.pair}"][data-side="${oppositeSide}"]`);
-
-      input.value = String(clampedValue);
-      oppositeInput.value = String(100 - clampedValue);
-    }
-
-    function decodeBase64Text(base64Value) {
-      const cleanedValue = base64Value.replace(/\s+/g, "");
-      const binaryText = atob(cleanedValue);
-      const bytes = Uint8Array.from(binaryText, character => character.charCodeAt(0));
-
-      return new TextDecoder("utf-8").decode(bytes);
-    }
-
-    function parseAxisValues(decodedText) {
-      const values = new Map();
-      const valuePattern = /([^();]+?)\s*\(\s*(-?\d+(?:[.,]\d+)?)\s*\)/g;
-      let match;
-
-      while ((match = valuePattern.exec(decodedText)) !== null) {
-        const label = normalizeLabel(match[1]);
-        const value = Number(match[2].replace(",", "."));
-
-        if (Number.isFinite(value)) {
-          values.set(label, Math.min(100, Math.max(0, value)));
+  function applyParsedValues(parsedMap) {
+    let matched = 0;
+    form.reset();
+    pairs.forEach(pair => {
+      const posVal = findParsedValue(parsedMap, pair.positiveLabel);
+      let negVal = findParsedValue(parsedMap, pair.negativeLabel);
+      if (negVal === undefined && pair.aliases) {
+        for (let alias of pair.aliases) {
+          if (negVal === undefined) negVal = findParsedValue(parsedMap, alias);
         }
       }
-
-      return values;
-    }
-
-    function findParsedValue(parsedValues, label) {
-      return parsedValues.get(normalizeLabel(label));
-    }
-
-    function applyParsedValues(parsedValues) {
-      let matchedPairs = 0;
-
-      form.reset();
-
-      pairs.forEach(pair => {
-        const positiveValue = findParsedValue(parsedValues, pair.positiveLabel);
-        let negativeValue = findParsedValue(parsedValues, pair.negativeLabel);
-
-        if (negativeValue === undefined && pair.aliases) {
-          pair.aliases.forEach(alias => {
-            if (negativeValue === undefined) {
-              negativeValue = findParsedValue(parsedValues, alias);
-            }
-          });
-        }
-
-        if (positiveValue === undefined && negativeValue === undefined) return;
-
-        if (positiveValue !== undefined && negativeValue !== undefined) {
-          setPairInput(pair.id, "positive", positiveValue);
-          setPairInput(pair.id, "negative", negativeValue);
-          matchedPairs += 1;
-          return;
-        }
-
-        if (positiveValue !== undefined) {
-          setPairInput(pair.id, "positive", positiveValue);
-          setPairInput(pair.id, "negative", 100 - positiveValue);
-          matchedPairs += 1;
-          return;
-        }
-
-        setPairInput(pair.id, "negative", negativeValue);
-        setPairInput(pair.id, "positive", 100 - negativeValue);
-        matchedPairs += 1;
-      });
-
-      return matchedPairs;
-    }
-
-    function importBase64Values() {
-      const rawValue = base64Input.value.trim();
-
-      if (rawValue === "") {
-        base64Status.textContent = "";
-        return;
+      if (posVal === undefined && negVal === undefined) return;
+      if (posVal !== undefined && negVal !== undefined) {
+        setPairInput(pair.id, "positive", posVal);
+        setPairInput(pair.id, "negative", negVal);
+        matched++;
+      } else if (posVal !== undefined) {
+        setPairInput(pair.id, "positive", posVal);
+        setPairInput(pair.id, "negative", 100 - posVal);
+        matched++;
+      } else if (negVal !== undefined) {
+        setPairInput(pair.id, "negative", negVal);
+        setPairInput(pair.id, "positive", 100 - negVal);
+        matched++;
       }
+    });
+    return matched;
+  }
 
-      try {
-        const decodedText = decodeBase64Text(rawValue);
-        const parsedValues = parseAxisValues(decodedText);
-        const matchedPairs = applyParsedValues(parsedValues);
-
-        calculateResult();
-        base64Status.textContent = `Wczytano ${matchedPairs} pasujących par.`;
-        base64Status.classList.remove("error");
-      } catch (error) {
-        base64Status.textContent = "Nie udało się odczytać kodu Base64.";
-        base64Status.classList.add("error");
-      }
-    }
-
-    function getPairInfluence(pair) {
-      const positiveValue = parsePairValue(pair.id, "positive");
-      const negativeValue = parsePairValue(pair.id, "negative");
-
-      if (positiveValue === null || negativeValue === null) {
-        return null;
-      }
-
-      const weight = state.mode === "weighted" ? pair.weight : 1;
-      const difference = positiveValue - negativeValue;
-
-      return {
-        value: difference * weight,
-        max: 100 * weight
-      };
-    }
-
-    function normalizeAxisScore(sum, maxInfluence) {
-      return maxInfluence > 0 ? (sum / maxInfluence) * 10 : 0;
-    }
-
-    function calculateAxis(axis) {
-      let sum = 0;
-      let maxInfluence = 0;
-      let active = 0;
-
-      pairs.filter(pair => pair.axis === axis).forEach(pair => {
-        const influence = getPairInfluence(pair);
-
-        // Niepełna para jest pomijana i nie wpływa na dzielnik normalizujący.
-        if (influence === null) return;
-
-        sum += influence.value;
-        maxInfluence += influence.max;
-        active += 1;
-      });
-
-      return {
-        score: normalizeAxisScore(sum, maxInfluence),
-        active
-      };
-    }
-
-    function clampCompassValue(value) {
-      return Math.min(10, Math.max(-10, value));
-    }
-
-    function getPositionName(x, y) {
-      if (x === 0 && y === 0) return "środek kompasu";
-      if (x >= 0 && y >= 0) return "prawa góra, ćwiartka niebieska";
-      if (x >= 0 && y < 0) return "prawy dół, ćwiartka żółta";
-      if (x < 0 && y >= 0) return "lewa góra, ćwiartka czerwona";
-      return "lewy dół, ćwiartka czarna";
-    }
-
-    function updateCompass() {
-      marker.style.left = `${((state.x + 10) / 20) * 100}%`;
-      marker.style.top = `${((10 - state.y) / 20) * 100}%`;
-    }
-
-    function updateResults() {
-      xResult.textContent = state.x.toFixed(2);
-      yResult.textContent = state.y.toFixed(2);
-      modeResult.textContent = state.mode === "weighted" ? "Wagowy" : "Jednakowe";
-      activePairsResult.textContent = String(state.activePairs);
-      positionResult.classList.toggle("error", state.activePairs === 0);
-      positionResult.textContent = state.activePairs === 0
-        ? "Położenie: brak pełnych par, punkt pozostaje w środku."
-        : `Położenie: ${getPositionName(state.x, state.y)}.`;
-    }
-
-    function calculateResult() {
-      const xAxis = calculateAxis("x");
-      const yAxis = calculateAxis("y");
-
-      state.x = clampCompassValue(xAxis.score);
-      state.y = clampCompassValue(yAxis.score);
-      state.activePairs = xAxis.active + yAxis.active;
-
-      updateCompass();
-      updateResults();
-    }
-
-    function resetAll() {
-      form.reset();
-      base64Input.value = "";
+  function importBase64Values() {
+    const raw = base64Input.value.trim();
+    if (raw === "") {
       base64Status.textContent = "";
-      base64Status.classList.remove("error");
-      state.x = 0;
-      state.y = 0;
-      state.activePairs = 0;
-      updateCompass();
-      updateResults();
+      return;
     }
-
-    function setMode(nextMode) {
-      state.mode = nextMode;
-      modeButtons.forEach(button => {
-        button.classList.toggle("active", button.dataset.mode === nextMode);
-      });
+    try {
+      const decoded = decodeBase64Text(raw);
+      const parsed = parseAxisValues(decoded);
+      const matched = applyParsedValues(parsed);
       calculateResult();
+      base64Status.textContent = `✔️ Wczytano ${matched} pasujących par.`;
+      base64Status.classList.remove("error");
+    } catch (err) {
+      base64Status.textContent = "❌ Nie udało się odczytać kodu Base64.";
+      base64Status.classList.add("error");
     }
+  }
 
-    renderPairs();
+  function getPairInfluence(pair) {
+    const pos = parsePairValue(pair.id, "positive");
+    const neg = parsePairValue(pair.id, "negative");
+    if (pos === null || neg === null) return null;
+    const weight = state.mode === "weighted" ? pair.weight : 1;
+    const diff = pos - neg;
+    return { value: diff * weight, max: 100 * weight };
+  }
+
+  function normalizeAxisScore(sum, maxSum) {
+    return maxSum > 0 ? (sum / maxSum) * 10 : 0;
+  }
+
+  function calculateAxis(axis) {
+    let sum = 0, maxSum = 0, active = 0;
+    pairs.filter(p => p.axis === axis).forEach(pair => {
+      const infl = getPairInfluence(pair);
+      if (infl === null) return;
+      sum += infl.value;
+      maxSum += infl.max;
+      active++;
+    });
+    return { score: normalizeAxisScore(sum, maxSum), active };
+  }
+
+  function clampCompass(v) {
+    return Math.min(10, Math.max(-10, v));
+  }
+
+  function getPositionName(x, y) {
+    if (x === 0 && y === 0) return "środek kompasu";
+    if (x >= 0 && y >= 0) return "prawa góra, ćwiartka niebieska";
+    if (x >= 0 && y < 0) return "prawy dół, ćwiartka żółta";
+    if (x < 0 && y >= 0) return "lewa góra, ćwiartka czerwona";
+    return "lewy dół, ćwiartka czarna";
+  }
+
+  function updateCompass() {
+    const leftPercent = ((state.x + 10) / 20) * 100;
+    const topPercent = ((10 - state.y) / 20) * 100;
+    marker.style.left = `${leftPercent}%`;
+    marker.style.top = `${topPercent}%`;
+  }
+
+  function updateResults() {
+    xResult.textContent = state.x.toFixed(2);
+    yResult.textContent = state.y.toFixed(2);
+    modeResult.textContent = state.mode === "weighted" ? "Wagowy" : "Jednakowe";
+    activePairsResult.textContent = String(state.activePairs);
+    if (state.activePairs === 0) {
+      positionResult.innerHTML = "⚠️ Położenie: brak pełnych par, punkt pozostaje w środku.";
+      positionResult.classList.add("error");
+    } else {
+      positionResult.innerHTML = `📍 Położenie: ${getPositionName(state.x, state.y)}.`;
+      positionResult.classList.remove("error");
+    }
+  }
+
+  function calculateResult() {
+    const xAxis = calculateAxis("x");
+    const yAxis = calculateAxis("y");
+    state.x = clampCompassValue(xAxis.score);
+    state.y = clampCompassValue(yAxis.score);
+    state.activePairs = xAxis.active + yAxis.active;
     updateCompass();
     updateResults();
+  }
 
-    document.querySelector("#calculateBtn").addEventListener("click", calculateResult);
-    document.querySelector("#resetBtn").addEventListener("click", resetAll);
-    base64Input.addEventListener("input", importBase64Values);
-    form.addEventListener("input", event => {
-      if (event.target.matches("input")) {
-        syncOppositeValue(event.target);
-      }
+  function clampCompassValue(value) {
+    return Math.min(10, Math.max(-10, value));
+  }
+
+  function resetAll() {
+    form.reset();
+    base64Input.value = "";
+    base64Status.textContent = "";
+    base64Status.classList.remove("error");
+    state.x = 0;
+    state.y = 0;
+    state.activePairs = 0;
+    updateCompass();
+    updateResults();
+  }
+
+  function setMode(nextMode) {
+    state.mode = nextMode;
+    modeButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.mode === nextMode);
     });
-    modeButtons.forEach(button => {
-      button.addEventListener("click", () => setMode(button.dataset.mode));
-    });
-  </script>
+    calculateResult();
+  }
+
+  // ----- PRZEŁĄCZNIK MOTYWU JASNY/CIEMNY -----
+  const themeToggle = document.getElementById("themeToggle");
+  function setTheme(theme) {
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+      themeToggle.innerHTML = "☀️ Tryb jasny";
+      localStorage.setItem("kompas-theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      themeToggle.innerHTML = "🌙 Tryb ciemny";
+      localStorage.setItem("kompas-theme", "light");
+    }
+  }
+
+  const savedTheme = localStorage.getItem("kompas-theme");
+  if (savedTheme === "dark") setTheme("dark");
+  else setTheme("light");
+
+  themeToggle.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark");
+    setTheme(isDark ? "light" : "dark");
+  });
+
+  // ----- INICJALIZACJA -----
+  renderPairs();
+  updateCompass();
+  updateResults();
+
+  document.querySelector("#calculateBtn").addEventListener("click", calculateResult);
+  document.querySelector("#resetBtn").addEventListener("click", resetAll);
+  base64Input.addEventListener("input", importBase64Values);
+  form.addEventListener("input", (e) => {
+    if (e.target.matches("input")) syncOppositeValue(e.target);
+  });
+  modeButtons.forEach(btn => {
+    btn.addEventListener("click", () => setMode(btn.dataset.mode));
+  });
+</script>
 </body>
 </html>
