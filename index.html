@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kompas polityczny · elegant</title>
+  <title>NeoAutystyk Kompas</title>
   <style>
     /* ========== RESET & BAZA ========== */
     * {
@@ -526,7 +526,7 @@
 <main class="app">
   <header>
     <div class="title-wrap">
-      <h1>Kompas polityczny</h1>
+      <h1>NeoAutystyk Kompas</h1>
       <p class="lead">Wprowadź wartości 0–100. Każda para działa jak przeciąganie liny – liczy się różnica między stronami. Puste lub niekompletne pary są pomijane.</p>
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw jasny/ciemny">🌙 Tryb ciemny</button>
@@ -536,14 +536,15 @@
     <div>
       <section class="controls" aria-label="Sterowanie">
         <div class="base64-box">
-          <label for="base64Input">📎 Kod Base64 z wynikami</label>
-          <textarea id="base64Input" placeholder="Wklej kod Base64"></textarea>
+          <label for="base64Input">📎 Kod z wynikami</label>
+          <textarea id="base64Input" placeholder="Wklej kod z wynikami"></textarea>
           <p class="base64-status" id="base64Status"></p>
         </div>
 
         <div class="mode-switch" role="group" aria-label="Tryb obliczeń">
-          <button type="button" data-mode="equal">Jednakowe wagi</button>
           <button type="button" class="active" data-mode="weighted">Tryb wagowy</button>
+          <button type="button" data-mode="equal">Jednakowe wagi</button>
+
         </div>
 
         <div class="actions">
@@ -752,7 +753,7 @@
       base64Status.textContent = `✔️ Wczytano ${matched} pasujących par.`;
       base64Status.classList.remove("error");
     } catch (err) {
-      base64Status.textContent = "❌ Nie udało się odczytać kodu Base64.";
+      base64Status.textContent = "❌ Nie udało się odczytać kodu z wynikami.";
       base64Status.classList.add("error");
     }
   }
@@ -886,6 +887,12 @@
   modeButtons.forEach(btn => {
     btn.addEventListener("click", () => setMode(btn.dataset.mode));
   });
+
+      <footer>
+      <p>Wersja robocza, przed ponownym nadejściem Mypolitics <br> <a href="https://x.com/CusterKnuckle" target="_blank" rel="noopener noreferrer">Autor: @CusterKnuckle</a></p>
+    </footer>
+  </div>
+  
 </script>
 </body>
 </html>
