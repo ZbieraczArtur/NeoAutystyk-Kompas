@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>NeoAutystyk Kompas — analiza polityczna</title>
   <style>
     /* ========== NOWOCZESNY STYL (z załączonego style.css) ========== */
@@ -143,6 +143,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      touch-action: manipulation;
     }
 
     .theme-toggle:hover {
@@ -243,6 +244,7 @@
       cursor: pointer;
       color: var(--text-secondary);
       transition: var(--transition-speed);
+      touch-action: manipulation;
     }
 
     .mode-switch button.active {
@@ -271,6 +273,7 @@
       cursor: pointer;
       transition: all 0.15s;
       color: var(--text-primary);
+      touch-action: manipulation;
     }
 
     .actions button.primary {
@@ -343,6 +346,7 @@
       font-size: 0.9rem;
       transition: all 0.2s;
       color: var(--text-primary);
+      touch-action: manipulation;
     }
 
     input:focus {
@@ -529,7 +533,7 @@
       text-decoration: underline;
     }
 
-    /* responsywność */
+    /* ========== ULEPSZENIA MOBILNE ========== */
     @media (max-width: 860px) {
       .layout {
         grid-template-columns: 1fr;
@@ -541,9 +545,14 @@
       body {
         padding: 1rem;
       }
+      .compass-wrap {
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
       .pair {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -558,6 +567,63 @@
       }
       .result-grid {
         grid-template-columns: 1fr;
+      }
+      
+      /* KOMPAS: WIĘKSZY + MNIEJSZY PUNKT */
+      .compass-wrap {
+        padding: 1rem;
+      }
+      .compass {
+        border-width: 5px; /* wizualnie bardziej wyrazisty */
+        min-width: 260px;
+        width: 100%;
+      }
+      .compass-outer-label {
+        font-size: 0.85rem; /* większe etykiety */
+      }
+      .tick {
+        font-size: 0.75rem;
+        padding: 2px 5px;
+        border-width: 1.5px;
+      }
+      .marker {
+        width: 18px;
+        height: 18px;
+        border-width: 2px;
+        box-shadow: 0 0 0 2px var(--text-primary);
+      }
+      /* większe cele dotykowe dla pól */
+      input, .actions button, .mode-switch button {
+        font-size: 1rem;
+        padding: 12px 12px;
+      }
+      .pair label {
+        font-size: 0.9rem;
+      }
+      .direction {
+        font-size: 0.7rem;
+      }
+      .summary, .base64-status {
+        font-size: 0.85rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .lead {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* jeszcze mniejsze ekrany (poniżej 420px) – marker jeszcze delikatniejszy */
+    @media (max-width: 420px) {
+      .marker {
+        width: 16px;
+        height: 16px;
+        border-width: 2px;
+        box-shadow: 0 0 0 1.5px var(--text-primary);
+      }
+      .compass {
+        border-width: 4px;
       }
     }
   </style>
@@ -600,11 +666,11 @@
     </div>
 
     <!-- PRAWA KOLUMNA: kompas + wyniki -->
-    <aside class="stage">
-      <section class="compass-wrap">
+    <aside class="stage" id="stageArea">
+      <section class="compass-wrap" id="compassSection">
         <div class="compass-frame">
           <div></div>
-          <div class="compass-outer-label top">Autonomia</div>
+          <div class="compass-outer-label top">Heteronomia</div>
           <div></div>
           <div class="compass-outer-label left">Socjalizm</div>
           <div class="compass" id="compass">
@@ -617,7 +683,7 @@
           </div>
           <div class="compass-outer-label right">Kapitalizm</div>
           <div></div>
-          <div class="compass-outer-label bottom">Heteronomia</div>
+          <div class="compass-outer-label bottom">Autonomia</div>
           <div></div>
         </div>
       </section>
@@ -673,6 +739,7 @@
   const activePairsResult = document.querySelector("#activePairsResult");
   const positionResult = document.querySelector("#positionResult");
   const modeButtons = document.querySelectorAll("[data-mode]");
+  const compassSection = document.getElementById("compassSection");
 
   // RENDER PAR
   function renderPairs() {
@@ -875,11 +942,7 @@
     base64Input.value = "";
     base64Status.textContent = "";
     base64Status.classList.remove("error");
-    state.x = 0;
-    state.y = 0;
-    state.activePairs = 0;
-    updateCompass();
-    updateResults();
+    calculateResult(); // pełne przeliczenie z pustych pól -> wszystkie zerowe
   }
 
   function setMode(nextMode) {
@@ -911,16 +974,36 @@
     setTheme(isDark ? "light" : "dark");
   });
 
+  // ----- AUTOMATYCZNE OBLICZANIE przy każdej zmianie pól (lepsze UX) -----
+  function autoCalculateHandler() {
+    calculateResult();
+  }
+
+  // ----- PRZEWIJANIE DO KOMPASU po kliknięciu "Oblicz wynik" -----
+  function handleCalculateWithScroll() {
+    calculateResult();
+    if (compassSection) {
+      compassSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   // INIT
   renderPairs();
-  updateCompass();
-  updateResults();
+  calculateResult();
 
-  document.querySelector("#calculateBtn").addEventListener("click", calculateResult);
-  document.querySelector("#resetBtn").addEventListener("click", resetAll);
-  base64Input.addEventListener("input", importBase64Values);
+  // Eventy: automatyczne przeliczanie przy każdej zmianie (oprócz base64 by nie scrollować)
+  form.addEventListener("input", autoCalculateHandler);
+  // obsługa kontrapunktów (synchro)
   form.addEventListener("input", (e) => {
     if (e.target.matches("input")) syncOppositeValue(e.target);
+  });
+  // przyciski
+  const calculateBtn = document.querySelector("#calculateBtn");
+  calculateBtn.addEventListener("click", handleCalculateWithScroll);
+  document.querySelector("#resetBtn").addEventListener("click", resetAll);
+  base64Input.addEventListener("input", () => {
+    importBase64Values();
+    // nie scrollujemy przy wklejaniu, tylko import
   });
   modeButtons.forEach(btn => {
     btn.addEventListener("click", () => setMode(btn.dataset.mode));
