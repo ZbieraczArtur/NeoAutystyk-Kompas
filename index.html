@@ -3,148 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeoAutystyk Kompas</title>
+  <title>NeoAutystyk Kompas — analiza polityczna</title>
   <style>
-    /* ========== RESET & BAZA ========== */
+    /* ========== NOWOCZESNY STYL (z załączonego style.css) ========== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* systemowe zmienne + tryb jasny (domyślny) */
     :root {
-      --bg-page: #f0f2f5;
-      --surface: #ffffff;
-      --surface-soft: #fafafc;
-      --ink: #11181c;
-      --ink-light: #3c4a54;
-      --border: #e2e8f0;
-      --border-focus: #2c7da0;
-      --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
-      --accent: #2c7da0;
-      --accent-soft: #eef6fc;
-      --transition: all 0.2s ease;
-      --red: #ff1744;
-      --blue: #006eff;
-      --yellow: #ffe500;
-      --black: #111111;
+      --bg-gradient-start: #f9fafc;
+      --bg-gradient-end: #eef2f8;
+      --text-primary: #0a0f1c;
+      --text-secondary: #2c3e4e;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --card-bg-hover: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.05);
+      --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 16px 30px -12px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 24px 40px -16px rgba(0, 0, 0, 0.15);
+      --btn-bg: #f0f3f8;
+      --btn-hover: #e6ecf3;
+      --comment-bg: #fef3e8;
+      --comment-color: #c2410c;
+      --desc-bg: #fafcff;
+      --desc-border: #cbd5e1;
+      --answer-strong-agree: #1f8b4c;
+      --answer-mild-agree: #52b152;
+      --answer-mild-disagree: #e25c5c;
+      --answer-strong-disagree: #b91c1c;
+      --answer-skip: #94a3b8;
+      --submit-bg: linear-gradient(105deg, #1a2a3f, #0f1a2a);
+      --submit-hover: linear-gradient(105deg, #0f1a2a, #08121f);
+      --value-bar-bg: #e2e8f0;
+      --ranking-hover: #f1f5f9;
+      --rank-percent-bg: #eef2ff;
+      --popup-bg: #ffffff;
+      --footer-color: #4b5563;
+      --footer-border: #e2e8f0;
+      --link-color: #2563eb;
+      --transition-speed: 0.2s;
     }
 
-    /* tryb ciemny */
     body.dark {
-      --bg-page: #121212;
-      --surface: #1e1e2a;
-      --surface-soft: #252530;
-      --ink: #edf2f7;
-      --ink-light: #a0aec0;
-      --border: #2d3748;
-      --border-focus: #5b9fc1;
-      --accent: #5b9fc1;
-      --accent-soft: #1e2a32;
+      --bg-gradient-start: #0a0f1c;
+      --bg-gradient-end: #111827;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --card-bg: rgba(17, 24, 39, 0.95);
+      --card-bg-hover: #1e293b;
+      --card-border: rgba(255, 255, 255, 0.08);
       --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.4);
-      --shadow-md: 0 12px 24px -8px rgba(0, 0, 0, 0.6);
+      --shadow-md: 0 16px 30px -12px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 24px 40px -16px rgba(0, 0, 0, 0.6);
+      --btn-bg: #2d3a4f;
+      --btn-hover: #3b4a63;
+      --comment-bg: #2d2318;
+      --comment-color: #fbbf24;
+      --desc-bg: #111827;
+      --desc-border: #3f4e6b;
+      --answer-strong-agree: #1f6e43;
+      --answer-mild-agree: #3e8e41;
+      --answer-mild-disagree: #b94a4a;
+      --answer-strong-disagree: #8b2c2c;
+      --answer-skip: #5a6a7e;
+      --submit-bg: linear-gradient(105deg, #0f172a, #030712);
+      --submit-hover: linear-gradient(105deg, #1e293b, #0f172a);
+      --value-bar-bg: #1e2a3a;
+      --ranking-hover: #1e293b;
+      --rank-percent-bg: #0f172a;
+      --popup-bg: #1e293b;
+      --footer-color: #94a3b8;
+      --footer-border: #1e2a3a;
+      --link-color: #60a5fa;
     }
 
     body {
-      background: var(--bg-page);
-      color: var(--ink);
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
       line-height: 1.5;
+      padding: 2rem 1rem;
+      min-height: 100vh;
       transition: background 0.2s, color 0.2s;
-      scroll-behavior: smooth;
     }
 
-    /* ========== GŁÓWNY KONTENER ========== */
-    .app {
+    .container {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 3rem;
     }
 
-    /* ========== HEADER ========== */
-    header {
+    /* Header / title */
+    .header-top {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      align-items: flex-end;
-      gap: 1.2rem;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .title-wrap {
-      flex: 1;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     h1 {
-      margin: 0;
-      font-size: clamp(2.2rem, 6vw, 3.8rem);
-      font-weight: 700;
+      font-size: 2.2rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+      background: linear-gradient(135deg, #1f3a5f, #2b4f6c);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    body.dark h1 {
+      background: none;
+      color: #e2e8f0;
+      text-shadow: none;
     }
 
     .lead {
       max-width: 680px;
       margin-top: 0.5rem;
-      color: var(--ink-light);
+      color: var(--text-secondary);
       font-size: 0.95rem;
     }
 
-    /* przycisk motywu */
     .theme-toggle {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 60px;
-      padding: 0.5rem 1rem;
-      font-size: 1.25rem;
+      background: var(--btn-bg);
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      transition: all var(--transition-speed) ease;
+      line-height: 1;
+      box-shadow: var(--shadow-sm);
+      color: var(--text-primary);
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      backdrop-filter: blur(4px);
-      transition: var(--transition);
-      box-shadow: var(--shadow-sm);
-      font-weight: 500;
-      color: var(--ink);
+      gap: 0.5rem;
     }
 
     .theme-toggle:hover {
-      background: var(--surface-soft);
-      transform: scale(0.97);
-      border-color: var(--accent);
+      transform: scale(0.96);
+      background: var(--btn-hover);
     }
 
-    /* ========== LAYOUT 2 KOLUMNY ========== */
+    /* karty / panele */
+    .controls, .form-panel, .compass-wrap, .results {
+      background: var(--card-bg);
+      backdrop-filter: blur(4px);
+      border-radius: 32px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .controls, .form-panel, .results {
+      padding: 1.5rem;
+    }
+
+    .compass-wrap {
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
     .layout {
       display: grid;
       grid-template-columns: minmax(340px, 1fr) minmax(340px, 520px);
       gap: 2rem;
       align-items: start;
-    }
-
-    /* panele – subtelne zaokrąglenia + cień */
-    .controls, .results, .form-panel, .compass-wrap {
-      background: var(--surface);
-      border-radius: 28px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      transition: background 0.2s, border 0.2s, box-shadow 0.2s;
-    }
-
-    .controls {
-      padding: 1.4rem;
-      margin-bottom: 1.6rem;
-    }
-
-    .form-panel {
-      padding: 1.5rem;
+      margin-top: 1rem;
     }
 
     /* base64 box */
@@ -159,7 +189,7 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--ink-light);
+      color: var(--text-secondary);
     }
 
     textarea {
@@ -168,24 +198,24 @@
       padding: 12px 14px;
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-size: 0.85rem;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      color: var(--ink);
+      background: var(--desc-bg);
+      border: 1px solid var(--footer-border);
+      border-radius: 24px;
+      color: var(--text-primary);
       resize: vertical;
-      transition: var(--transition);
+      transition: all 0.2s;
     }
 
     textarea:focus {
       outline: none;
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+      border-color: var(--link-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
     }
 
     .base64-status {
       font-size: 0.8rem;
       font-weight: 500;
-      color: var(--ink-light);
+      color: var(--text-secondary);
     }
 
     .base64-status.error {
@@ -195,11 +225,11 @@
     /* przełącznik trybu wagowego */
     .mode-switch {
       display: flex;
-      background: var(--surface-soft);
+      background: var(--value-bar-bg);
       border-radius: 60px;
       padding: 4px;
       margin: 1rem 0 1.2rem;
-      border: 1px solid var(--border);
+      border: 1px solid var(--card-border);
     }
 
     .mode-switch button {
@@ -211,14 +241,14 @@
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
-      color: var(--ink-light);
-      transition: var(--transition);
+      color: var(--text-secondary);
+      transition: var(--transition-speed);
     }
 
     .mode-switch button.active {
-      background: var(--surface);
-      color: var(--ink);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      background: var(--card-bg);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
       font-weight: 700;
     }
 
@@ -230,41 +260,45 @@
 
     .actions button {
       flex: 1;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: 40px;
+      background: var(--btn-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 60px;
       padding: 12px 8px;
       font-weight: 700;
       font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.3px;
       cursor: pointer;
-      transition: var(--transition);
-      color: var(--ink);
+      transition: all 0.15s;
+      color: var(--text-primary);
     }
 
     .actions button.primary {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: linear-gradient(105deg, #1a2a3f, #0f1a2a);
+      border-color: transparent;
       color: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow-sm);
+    }
+
+    body.dark .actions button.primary {
+      background: linear-gradient(105deg, #0f172a, #030712);
     }
 
     .actions button:hover {
       transform: translateY(-2px);
       filter: brightness(0.96);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-md);
     }
 
-    /* PARY PYTAŃ */
+    /* pary pytań */
     .axis-title {
       margin: 1.5rem 0 1rem;
       padding: 0 0 0.6rem;
       font-size: 1.3rem;
       font-weight: 700;
       letter-spacing: -0.2px;
-      border-bottom: 2px solid var(--border);
-      color: var(--ink);
+      border-bottom: 2px solid var(--footer-border);
+      color: var(--text-primary);
     }
 
     .axis-title:first-of-type {
@@ -277,7 +311,7 @@
       gap: 14px;
       align-items: end;
       padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--footer-border);
     }
 
     .pair:last-child {
@@ -296,42 +330,38 @@
       font-size: 0.7rem;
       font-weight: 500;
       text-transform: uppercase;
-      color: var(--ink-light);
+      color: var(--text-secondary);
     }
 
     input {
       width: 100%;
       padding: 10px 12px;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: 20px;
+      background: var(--desc-bg);
+      border: 1px solid var(--footer-border);
+      border-radius: 24px;
       font-family: inherit;
       font-size: 0.9rem;
-      transition: var(--transition);
-      color: var(--ink);
+      transition: all 0.2s;
+      color: var(--text-primary);
     }
 
     input:focus {
       outline: none;
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+      border-color: var(--link-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
     }
 
     .versus {
       font-weight: 700;
       font-size: 0.85rem;
-      color: var(--ink-light);
-      background: var(--surface-soft);
-      padding: 5px 10px;
+      color: var(--text-secondary);
+      background: var(--value-bar-bg);
+      padding: 5px 12px;
       border-radius: 32px;
       text-align: center;
     }
 
-    /* KOMPAS – bez zmian stylu planszy, tylko delikatna ramka i padding */
-    .compass-wrap {
-      padding: 1.2rem 1rem;
-    }
-
+    /* KOMPAS – zachowana oryginalna wizualizacja */
     .compass-frame {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -344,7 +374,7 @@
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--ink-light);
+      color: var(--text-secondary);
     }
 
     .compass-outer-label.top,
@@ -362,20 +392,19 @@
       transform: rotate(180deg);
     }
 
-    /* RZECZYWISTY KOMPAS – absolutnie NIE ZMIENIAMY JEGO WIZUALIZACJI (kolory, kratka, podział) */
     .compass {
       position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
-      border: 4px solid var(--ink);
+      border: 4px solid var(--text-primary);
       overflow: hidden;
       background:
         linear-gradient(to right, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
         linear-gradient(to right, rgba(17, 17, 17, 0.18) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(17, 17, 17, 0.18) 1px, transparent 1px),
-        linear-gradient(to right, var(--red) 0 50%, var(--blue) 50% 100%),
-        linear-gradient(to right, var(--black) 0 50%, var(--yellow) 50% 100%);
+        linear-gradient(to right, #ff1744 0 50%, #006eff 50% 100%),
+        linear-gradient(to right, #111111 0 50%, #ffe500 50% 100%);
       background-size: 5% 5%, 5% 5%, 5% 5%, 5% 5%, 100% 50%, 100% 50%;
       background-position: 0 0, 0 0, 0 0, 0 0, top left, bottom left;
       background-repeat: repeat, repeat, repeat, repeat, no-repeat, no-repeat;
@@ -385,7 +414,7 @@
     .compass::after {
       content: "";
       position: absolute;
-      background: var(--ink);
+      background: var(--text-primary);
       z-index: 4;
     }
 
@@ -408,13 +437,13 @@
     .tick {
       position: absolute;
       z-index: 5;
-      background: var(--surface);
-      border: 2px solid var(--ink);
+      background: var(--card-bg);
+      border: 2px solid var(--text-primary);
       padding: 2px 6px;
       font-size: 0.7rem;
       font-weight: 900;
       border-radius: 20px;
-      color: var(--ink);
+      color: var(--text-primary);
     }
 
     .tick.x-min { left: 4px; top: calc(50% + 8px); }
@@ -432,17 +461,13 @@
       height: 24px;
       border: 3px solid #ffffff;
       background: #00ff88;
-      box-shadow: 0 0 0 3px var(--ink);
+      box-shadow: 0 0 0 3px var(--text-primary);
       transform: translate(-50%, -50%);
       transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       border-radius: 0px;
     }
 
-    /* Panel wyników */
-    .results {
-      padding: 1.5rem;
-    }
-
+    /* wyniki */
     .result-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -450,10 +475,10 @@
     }
 
     .metric {
-      background: var(--surface-soft);
-      border-radius: 24px;
+      background: var(--value-bar-bg);
+      border-radius: 28px;
       padding: 1rem;
-      border: 1px solid var(--border);
+      border: 1px solid var(--card-border);
     }
 
     .metric span {
@@ -461,7 +486,7 @@
       text-transform: uppercase;
       font-weight: 700;
       letter-spacing: 0.5px;
-      color: var(--ink-light);
+      color: var(--text-secondary);
     }
 
     .metric strong {
@@ -470,18 +495,38 @@
       font-weight: 800;
       margin-top: 0.5rem;
       line-height: 1.2;
+      color: var(--text-primary);
     }
 
     .summary {
       margin-top: 1rem;
       padding-top: 0.8rem;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--footer-border);
       font-weight: 500;
-      color: var(--ink-light);
+      color: var(--text-secondary);
     }
 
     .error {
       color: #e5484d;
+    }
+
+    /* footer – naprawiony */
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      margin-top: 4rem;
+      color: var(--footer-color);
+      border-top: 1px solid var(--footer-border);
+      padding-top: 2rem;
+    }
+
+    footer a {
+      color: var(--link-color);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
     }
 
     /* responsywność */
@@ -490,12 +535,11 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-      .app {
-        padding: 1.2rem;
+      .container {
+        padding: 0 1rem;
       }
-      header {
-        flex-direction: column;
-        align-items: flex-start;
+      body {
+        padding: 1rem;
       }
     }
 
@@ -515,38 +559,32 @@
       .result-grid {
         grid-template-columns: 1fr;
       }
-      .theme-toggle {
-        font-size: 1rem;
-        padding: 0.4rem 1rem;
-      }
     }
   </style>
 </head>
 <body>
-<main class="app">
-  <header>
-    <div class="title-wrap">
+<main class="container">
+  <div class="header-top">
+    <div>
       <h1>NeoAutystyk Kompas</h1>
       <p class="lead">Wprowadź wartości 0–100. Każda para działa jak przeciąganie liny – liczy się różnica między stronami. Puste lub niekompletne pary są pomijane.</p>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw jasny/ciemny">🌙 Tryb ciemny</button>
-  </header>
+    <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw">🌙 Tryb ciemny</button>
+  </div>
 
-  <section class="layout">
+  <div class="layout">
+    <!-- LEWA KOLUMNA: sterowanie + formularz -->
     <div>
-      <section class="controls" aria-label="Sterowanie">
+      <section class="controls">
         <div class="base64-box">
           <label for="base64Input">📎 Kod z wynikami</label>
-          <textarea id="base64Input" placeholder="Wklej kod z wynikami"></textarea>
+          <textarea id="base64Input" placeholder="Wklej kod z wynikami (Base64)"></textarea>
           <p class="base64-status" id="base64Status"></p>
         </div>
-
         <div class="mode-switch" role="group" aria-label="Tryb obliczeń">
-          <button type="button" class="active" data-mode="weighted">Tryb wagowy</button>
-          <button type="button" data-mode="equal">Jednakowe wagi</button>
-
+          <button type="button" class="active" data-mode="weighted">⚖️ Tryb wagowy</button>
+          <button type="button" data-mode="equal">📏 Jednakowe wagi</button>
         </div>
-
         <div class="actions">
           <button type="button" class="primary" id="calculateBtn">⟳ Oblicz wynik</button>
           <button type="button" id="resetBtn">🗑 Zresetuj</button>
@@ -561,8 +599,9 @@
       </form>
     </div>
 
+    <!-- PRAWA KOLUMNA: kompas + wyniki -->
     <aside class="stage">
-      <section class="compass-wrap" aria-label="Kompas polityczny">
+      <section class="compass-wrap">
         <div class="compass-frame">
           <div></div>
           <div class="compass-outer-label top">Autonomia</div>
@@ -574,7 +613,7 @@
             <span class="tick y-min">-10</span>
             <span class="tick y-max">+10</span>
             <span class="tick center">0</span>
-            <div class="marker" id="marker" title="Pozycja użytkownika"></div>
+            <div class="marker" id="marker" title="Twoja pozycja"></div>
           </div>
           <div class="compass-outer-label right">Kapitalizm</div>
           <div></div>
@@ -587,17 +626,21 @@
         <div class="result-grid">
           <div class="metric"><span>📐 Współrzędna X</span><strong id="xResult">0.00</strong></div>
           <div class="metric"><span>📏 Współrzędna Y</span><strong id="yResult">0.00</strong></div>
-          <div class="metric"><span>⚙️ Tryb</span><strong id="modeResult">Jednakowe</strong></div>
+          <div class="metric"><span>⚙️ Tryb</span><strong id="modeResult">Wagowy</strong></div>
           <div class="metric"><span>🔗 Aktywne pary</span><strong id="activePairsResult">0</strong></div>
         </div>
         <p class="summary" id="positionResult">📍 Położenie: środek kompasu.</p>
       </section>
     </aside>
-  </section>
+  </div>
+
+  <footer>
+    <p>Wersja robocza, przed ponownym nadejściem Mypolitics <br> <a href="https://x.com/CusterKnuckle" target="_blank" rel="noopener noreferrer">Autor: @CusterKnuckle</a></p>
+  </footer>
 </main>
 
 <script>
-  // ---------- DANE (oryginalne pary) ----------
+  // ---------- DANE (pary oryginalne) ----------
   const pairs = [
     { axis: "x", positiveLabel: "Własność prywatna", positiveSide: "prawo", negativeLabel: "Własność kolektywna", negativeSide: "lewo", weight: 1.5, aliases: ["Własność kolektywa"] },
     { axis: "x", positiveLabel: "Rynek", positiveSide: "prawo", negativeLabel: "Planowanie", negativeSide: "lewo", weight: 1 },
@@ -614,10 +657,10 @@
     { axis: "y", positiveLabel: "Kontrola granic", positiveSide: "góra", negativeLabel: "Minimalizacja granic", negativeSide: "dół", weight: 0.5 }
   ];
 
-  // ========== STAN APLIKACJI ==========
+  // STAN
   const state = { mode: "weighted", x: 0, y: 0, activePairs: 0 };
 
-  // DOM elementy
+  // DOM
   const form = document.querySelector("#valuesForm");
   const base64Input = document.querySelector("#base64Input");
   const base64Status = document.querySelector("#base64Status");
@@ -631,7 +674,7 @@
   const positionResult = document.querySelector("#positionResult");
   const modeButtons = document.querySelectorAll("[data-mode]");
 
-  // ---------- RENDER PAR ----------
+  // RENDER PAR
   function renderPairs() {
     pairs.forEach((pair, index) => {
       pair.id = `pair-${index}`;
@@ -658,6 +701,7 @@
 
   function parsePairValue(pairId, side) {
     const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
+    if (!input) return null;
     const rawValue = input.value.trim();
     if (rawValue === "") return null;
     const value = Number(rawValue);
@@ -667,7 +711,7 @@
 
   function setPairInput(pairId, side, value) {
     const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
-    input.value = String(Math.min(100, Math.max(0, value)));
+    if (input) input.value = String(Math.min(100, Math.max(0, value)));
   }
 
   function syncOppositeValue(input) {
@@ -679,10 +723,10 @@
     const oppositeSide = input.dataset.side === "positive" ? "negative" : "positive";
     const oppositeInput = form.querySelector(`[data-pair="${input.dataset.pair}"][data-side="${oppositeSide}"]`);
     input.value = String(clamped);
-    oppositeInput.value = String(100 - clamped);
+    if (oppositeInput) oppositeInput.value = String(100 - clamped);
   }
 
-  // BASE64 helpers
+  // BASE64
   function decodeBase64Text(base64Value) {
     const cleaned = base64Value.replace(/\s+/g, "");
     const binary = atob(cleaned);
@@ -819,15 +863,11 @@
   function calculateResult() {
     const xAxis = calculateAxis("x");
     const yAxis = calculateAxis("y");
-    state.x = clampCompassValue(xAxis.score);
-    state.y = clampCompassValue(yAxis.score);
+    state.x = clampCompass(xAxis.score);
+    state.y = clampCompass(yAxis.score);
     state.activePairs = xAxis.active + yAxis.active;
     updateCompass();
     updateResults();
-  }
-
-  function clampCompassValue(value) {
-    return Math.min(10, Math.max(-10, value));
   }
 
   function resetAll() {
@@ -850,7 +890,7 @@
     calculateResult();
   }
 
-  // ----- PRZEŁĄCZNIK MOTYWU JASNY/CIEMNY -----
+  // MOTYW (CIEMNY / JASNY)
   const themeToggle = document.getElementById("themeToggle");
   function setTheme(theme) {
     if (theme === "dark") {
@@ -863,17 +903,15 @@
       localStorage.setItem("kompas-theme", "light");
     }
   }
-
   const savedTheme = localStorage.getItem("kompas-theme");
   if (savedTheme === "dark") setTheme("dark");
   else setTheme("light");
-
   themeToggle.addEventListener("click", () => {
     const isDark = document.body.classList.contains("dark");
     setTheme(isDark ? "light" : "dark");
   });
 
-  // ----- INICJALIZACJA -----
+  // INIT
   renderPairs();
   updateCompass();
   updateResults();
@@ -887,12 +925,6 @@
   modeButtons.forEach(btn => {
     btn.addEventListener("click", () => setMode(btn.dataset.mode));
   });
-
-      <footer>
-      <p>Wersja robocza, przed ponownym nadejściem Mypolitics <br> <a href="https://x.com/CusterKnuckle" target="_blank" rel="noopener noreferrer">Autor: @CusterKnuckle</a></p>
-    </footer>
-  </div>
-  
 </script>
 </body>
 </html>
