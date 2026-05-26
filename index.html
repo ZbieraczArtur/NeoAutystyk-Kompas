@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>NeoAutystyk Kompas — analiza polityczna</title>
   <style>
-    /* ========== NOWOCZESNY STYL (z załączonego style.css) ========== */
+    /* ========== NOWOCZESNY STYL ========== */
     * {
       margin: 0;
       padding: 0;
@@ -94,7 +94,6 @@
       margin: 0 auto;
     }
 
-    /* Header / title */
     .header-top {
       display: flex;
       justify-content: space-between;
@@ -151,7 +150,6 @@
       background: var(--btn-hover);
     }
 
-    /* karty / panele */
     .controls, .form-panel, .compass-wrap, .results {
       background: var(--card-bg);
       backdrop-filter: blur(4px);
@@ -178,7 +176,6 @@
       margin-top: 1rem;
     }
 
-    /* base64 box */
     .base64-box {
       display: grid;
       gap: 0.6rem;
@@ -223,7 +220,6 @@
       color: #e5484d;
     }
 
-    /* przełącznik trybu wagowego */
     .mode-switch {
       display: flex;
       background: var(--value-bar-bg);
@@ -254,7 +250,6 @@
       font-weight: 700;
     }
 
-    /* przyciski akcji */
     .actions {
       display: flex;
       gap: 14px;
@@ -293,7 +288,6 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* pary pytań */
     .axis-title {
       margin: 1.5rem 0 1rem;
       padding: 0 0 0.6rem;
@@ -365,7 +359,6 @@
       text-align: center;
     }
 
-    /* KOMPAS – zachowana oryginalna wizualizacja */
     .compass-frame {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -471,7 +464,6 @@
       border-radius: 0px;
     }
 
-    /* wyniki */
     .result-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -514,7 +506,6 @@
       color: #e5484d;
     }
 
-    /* footer – naprawiony */
     footer {
       text-align: center;
       font-size: 0.75rem;
@@ -533,7 +524,6 @@
       text-decoration: underline;
     }
 
-    /* ========== ULEPSZENIA MOBILNE ========== */
     @media (max-width: 860px) {
       .layout {
         grid-template-columns: 1fr;
@@ -568,18 +558,16 @@
       .result-grid {
         grid-template-columns: 1fr;
       }
-      
-      /* KOMPAS: WIĘKSZY + MNIEJSZY PUNKT */
       .compass-wrap {
         padding: 1rem;
       }
       .compass {
-        border-width: 5px; /* wizualnie bardziej wyrazisty */
+        border-width: 5px;
         min-width: 260px;
         width: 100%;
       }
       .compass-outer-label {
-        font-size: 0.85rem; /* większe etykiety */
+        font-size: 0.85rem;
       }
       .tick {
         font-size: 0.75rem;
@@ -592,7 +580,6 @@
         border-width: 2px;
         box-shadow: 0 0 0 2px var(--text-primary);
       }
-      /* większe cele dotykowe dla pól */
       input, .actions button, .mode-switch button {
         font-size: 1rem;
         padding: 12px 12px;
@@ -614,7 +601,6 @@
       }
     }
 
-    /* jeszcze mniejsze ekrany (poniżej 420px) – marker jeszcze delikatniejszy */
     @media (max-width: 420px) {
       .marker {
         width: 16px;
@@ -781,15 +767,25 @@
     if (input) input.value = String(Math.min(100, Math.max(0, value)));
   }
 
+  // POPRAWIAM: jeśli wartość jest pusta, czyścimy również pole przeciwne
   function syncOppositeValue(input) {
     const rawValue = input.value.trim();
-    if (rawValue === "") return;
+    const oppositeSide = input.dataset.side === "positive" ? "negative" : "positive";
+    const oppositeInput = form.querySelector(`[data-pair="${input.dataset.pair}"][data-side="${oppositeSide}"]`);
+    
+    if (rawValue === "") {
+      // Usunięto wartość – czyścimy również pole przeciwne
+      if (oppositeInput) oppositeInput.value = "";
+      return;
+    }
+    
     const value = Number(rawValue);
     if (!Number.isFinite(value)) return;
     const clamped = Math.min(100, Math.max(0, value));
-    const oppositeSide = input.dataset.side === "positive" ? "negative" : "positive";
-    const oppositeInput = form.querySelector(`[data-pair="${input.dataset.pair}"][data-side="${oppositeSide}"]`);
+    // Ustawiamy bieżące pole na poprawną wartość
     input.value = String(clamped);
+    // Uzupełniamy przeciwne jako 100 - clamped, ale tylko jeśli przeciwne pole nie jest puste? 
+    // Zawsze uzupełniamy, bo to synchronizacja.
     if (oppositeInput) oppositeInput.value = String(100 - clamped);
   }
 
@@ -942,7 +938,7 @@
     base64Input.value = "";
     base64Status.textContent = "";
     base64Status.classList.remove("error");
-    calculateResult(); // pełne przeliczenie z pustych pól -> wszystkie zerowe
+    calculateResult();
   }
 
   function setMode(nextMode) {
@@ -974,36 +970,39 @@
     setTheme(isDark ? "light" : "dark");
   });
 
-  // ----- AUTOMATYCZNE OBLICZANIE przy każdej zmianie pól (lepsze UX) -----
-  function autoCalculateHandler() {
+  // AUTOMATYCZNE OBLICZANIE + SYNCHRONIZACJA przy każdej zmianie pól
+  function autoCalculateHandler(e) {
     calculateResult();
   }
+  
+  function syncHandler(e) {
+    const target = e.target;
+    if (target.matches("input")) syncOppositeValue(target);
+  }
 
-  // ----- PRZEWIJANIE DO KOMPASU po kliknięciu "Oblicz wynik" -----
-  function handleCalculateWithScroll() {
+  // INICJALIZACJA I EVENTY
+  renderPairs();
+  calculateResult();
+
+  form.addEventListener("input", (e) => {
+    // Najpierw synchronizacja (obsługa pól)
+    syncHandler(e);
+    // Potem przeliczenie wyników
+    autoCalculateHandler(e);
+  });
+  
+  // Przycisk "Oblicz wynik" – przewija do kompasu (dla wygody)
+  const calculateBtn = document.querySelector("#calculateBtn");
+  calculateBtn.addEventListener("click", () => {
     calculateResult();
     if (compassSection) {
       compassSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }
-
-  // INIT
-  renderPairs();
-  calculateResult();
-
-  // Eventy: automatyczne przeliczanie przy każdej zmianie (oprócz base64 by nie scrollować)
-  form.addEventListener("input", autoCalculateHandler);
-  // obsługa kontrapunktów (synchro)
-  form.addEventListener("input", (e) => {
-    if (e.target.matches("input")) syncOppositeValue(e.target);
   });
-  // przyciski
-  const calculateBtn = document.querySelector("#calculateBtn");
-  calculateBtn.addEventListener("click", handleCalculateWithScroll);
+  
   document.querySelector("#resetBtn").addEventListener("click", resetAll);
   base64Input.addEventListener("input", () => {
     importBase64Values();
-    // nie scrollujemy przy wklejaniu, tylko import
   });
   modeButtons.forEach(btn => {
     btn.addEventListener("click", () => setMode(btn.dataset.mode));
