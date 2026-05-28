@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>NeoAutystyk Kompas - Wielotrybowy</title>
   <style>
-
     * {
       margin: 0;
       padding: 0;
@@ -132,36 +131,44 @@
     .theme-toggle {
       background: var(--btn-bg);
       border: none;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.6rem;
       cursor: pointer;
-      padding: 0.5rem 1.2rem;
+      padding: 0.3rem 0.8rem;
       border-radius: 60px;
       transition: all var(--transition-speed) ease;
       line-height: 1;
       box-shadow: var(--shadow-sm);
-      color: var(--text-primary);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      touch-action: manipulation;
     }
 
     .theme-toggle:hover {
-      transform: scale(0.96);
+      transform: scale(0.94);
       background: var(--btn-hover);
     }
 
-    .controls, .form-panel, .compass-wrap, .results, .creative-panel {
+    .controls,
+    .form-panel,
+    .compass-wrap,
+    .results,
+    .creative-panel {
       background: var(--card-bg);
       backdrop-filter: blur(4px);
       border-radius: 32px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-sm);
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
     }
 
-    .controls, .form-panel, .results {
+    .controls:hover,
+    .form-panel:hover,
+    .compass-wrap:hover,
+    .results:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .controls,
+    .form-panel,
+    .results {
       padding: 1.5rem;
     }
 
@@ -249,7 +256,6 @@
       cursor: pointer;
       color: var(--text-secondary);
       transition: var(--transition-speed);
-      touch-action: manipulation;
       white-space: nowrap;
     }
 
@@ -278,18 +284,13 @@
       cursor: pointer;
       transition: all 0.15s;
       color: var(--text-primary);
-      touch-action: manipulation;
     }
 
     .actions button.primary {
-      background: linear-gradient(105deg, #1a2a3f, #0f1a2a);
+      background: var(--submit-bg);
       border-color: transparent;
       color: white;
       box-shadow: var(--shadow-sm);
-    }
-
-    body.dark .actions button.primary {
-      background: linear-gradient(105deg, #0f172a, #030712);
     }
 
     .actions button:hover {
@@ -350,7 +351,6 @@
       font-size: 0.9rem;
       transition: all 0.2s;
       color: var(--text-primary);
-      touch-action: manipulation;
     }
 
     input:focus {
@@ -543,7 +543,8 @@
       gap: 6px;
     }
 
-    .config-row select, .config-row input {
+    .config-row select,
+    .config-row input {
       width: auto;
       flex: 1;
       min-width: 70px;
@@ -634,7 +635,9 @@
         border-width: 2px;
         box-shadow: 0 0 0 2px var(--text-primary);
       }
-      input, .actions button, .mode-switch button {
+      input,
+      .actions button,
+      .mode-switch button {
         font-size: 1rem;
         padding: 12px 12px;
       }
@@ -650,10 +653,10 @@
 <main class="container">
   <div class="header-top">
     <div>
-      <h1>NeoAutystyk Kompas</h1>
+      <h1>🧭 NeoAutystyk Kompas</h1>
       <p class="lead">Wprowadź wartości 0–100. Każda para działa jak przeciąganie liny – liczy się różnica między stronami. Puste lub niekompletne pary są pomijane. Wartości są zapamiętywane przy zmianie trybu.</p>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw">🌙 Tryb ciemny</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw">🌙</button>
   </div>
 
   <div class="layout">
@@ -778,7 +781,6 @@
 
   // GLOBALNY STAN WARTOŚCI DLA WSZYSTKICH PAR
   let globalValues = {};
-  // Inicjalizacja
   allPairs.forEach(pair => {
     globalValues[pair.id] = { positive: null, negative: null };
   });
@@ -874,7 +876,6 @@
     container.appendChild(div);
   }
 
-  // Synchronizacja i zapis do globalValues
   function attachFormSync() {
     const form = document.getElementById("valuesForm");
     form.removeEventListener("input", formInputHandler);
@@ -899,7 +900,6 @@
           target.value = val;
           newVal = val;
           if (oppositeInput) oppositeInput.value = 100 - val;
-          // Zapisz do globalValues
           if (side === "positive") {
             globalValues[pairId].positive = val;
             globalValues[pairId].negative = 100 - val;
@@ -914,7 +914,6 @@
           else globalValues[pairId].negative = null;
         }
       } else {
-        // puste pole
         if (side === "positive") globalValues[pairId].positive = null;
         else globalValues[pairId].negative = null;
         if (oppositeInput) oppositeInput.value = "";
@@ -924,7 +923,7 @@
   }
 
   // --------------------------------------------------------------
-  // OBLICZENIA (używają bieżących wartości z DOM)
+  // OBLICZENIA
   // --------------------------------------------------------------
   function getPairInfluenceFromDOM(pairId, weightValue) {
     const pairDiv = document.querySelector(`.pair[data-pair-id="${pairId}"]`);
@@ -1000,7 +999,7 @@
   }
 
   // --------------------------------------------------------------
-  // BASE64 IMPORT (zapisuje do globalValues)
+  // BASE64 IMPORT
   // --------------------------------------------------------------
   function decodeBase64Text(base64Value) {
     const cleaned = base64Value.replace(/\s+/g, "");
@@ -1035,7 +1034,6 @@
     try {
       const decoded = decodeBase64Text(raw);
       const parsedMap = parseAxisValues(decoded);
-      // Reset globalValues
       allPairs.forEach(pair => {
         globalValues[pair.id] = { positive: null, negative: null };
       });
@@ -1059,9 +1057,8 @@
           matched++;
         }
       }
-      // Odśwież formularz, aby pokazać nowe wartości
       rebuildForm();
-      attachFormSync(); // ważne: ponowne podpięcie eventów po rebuildzie
+      attachFormSync();
       calculateResult();
       statusDiv.textContent = `✔️ Wczytano ${matched} pasujących par.`;
       statusDiv.classList.remove("error");
@@ -1073,7 +1070,7 @@
   }
 
   // --------------------------------------------------------------
-  // RESET (czyści globalValues i formularz)
+  // RESET
   // --------------------------------------------------------------
   function resetAll() {
     allPairs.forEach(pair => {
@@ -1087,7 +1084,7 @@
   }
 
   // --------------------------------------------------------------
-  // TRYB KREATYWNY – KONFIGURACJA
+  // TRYB KREATYWNY
   // --------------------------------------------------------------
   function renderCreativeConfigPanel() {
     const container = document.getElementById("creativePairsList");
@@ -1186,11 +1183,11 @@
   function setTheme(theme) {
     if (theme === "dark") {
       document.body.classList.add("dark");
-      themeToggle.innerHTML = "☀️ Tryb jasny";
+      themeToggle.innerHTML = "☀️";
       localStorage.setItem("kompas-theme", "dark");
     } else {
       document.body.classList.remove("dark");
-      themeToggle.innerHTML = "🌙 Tryb ciemny";
+      themeToggle.innerHTML = "🌙";
       localStorage.setItem("kompas-theme", "light");
     }
   }
