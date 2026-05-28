@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>NeoAutystyk Kompas – 4 tryby</title>
+  <title>NeoAutystyk Kompas</title>
   <style>
+
     * {
       margin: 0;
       padding: 0;
@@ -89,7 +90,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1280px;
       margin: 0 auto;
     }
 
@@ -149,7 +150,7 @@
       background: var(--btn-hover);
     }
 
-    .controls, .form-panel, .compass-wrap, .results, .creative-panel {
+    .controls, .form-panel, .compass-wrap, .results {
       background: var(--card-bg);
       backdrop-filter: blur(4px);
       border-radius: 32px;
@@ -158,7 +159,7 @@
       transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
     }
 
-    .controls, .form-panel, .results, .creative-panel {
+    .controls, .form-panel, .results {
       padding: 1.5rem;
     }
 
@@ -173,62 +174,6 @@
       gap: 2rem;
       align-items: start;
       margin-top: 1rem;
-    }
-
-    .creative-panel {
-      margin-top: 1.5rem;
-      overflow-x: auto;
-    }
-
-    .creative-panel h3 {
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-    }
-
-    .creative-config-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      max-height: 400px;
-      overflow-y: auto;
-      padding-right: 8px;
-    }
-
-    .creative-row {
-      display: grid;
-      grid-template-columns: 2fr 0.8fr 1fr 0.6fr;
-      gap: 10px;
-      align-items: center;
-      background: var(--value-bar-bg);
-      padding: 8px 12px;
-      border-radius: 40px;
-    }
-
-    .creative-row label {
-      flex-direction: row;
-      gap: 8px;
-      align-items: center;
-      font-weight: 500;
-      font-size: 0.8rem;
-    }
-
-    .creative-row select, .creative-row input {
-      width: auto;
-      padding: 6px 8px;
-      font-size: 0.8rem;
-    }
-
-    .labels-editor {
-      margin-top: 1rem;
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 12px;
-      border-top: 1px solid var(--footer-border);
-      padding-top: 1rem;
-    }
-
-    .labels-editor input {
-      width: 100%;
     }
 
     .base64-box {
@@ -265,9 +210,18 @@
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
     }
 
+    .base64-status {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .base64-status.error {
+      color: #e5484d;
+    }
+
     .mode-switch {
       display: flex;
-      flex-wrap: wrap;
       background: var(--value-bar-bg);
       border-radius: 60px;
       padding: 4px;
@@ -279,10 +233,10 @@
       flex: 1;
       background: transparent;
       border: none;
-      padding: 10px 8px;
+      padding: 10px 12px;
       border-radius: 60px;
       font-weight: 600;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       cursor: pointer;
       color: var(--text-secondary);
       transition: var(--transition-speed);
@@ -575,243 +529,377 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-      .creative-row {
-        grid-template-columns: 1fr 0.8fr 0.8fr 0.6fr;
-        gap: 8px;
+      .container {
+        padding: 0 1rem;
+      }
+      body {
+        padding: 1rem;
+      }
+      .compass-wrap {
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
+
     @media (max-width: 640px) {
-      .pair { grid-template-columns: 1fr; }
-      .versus { display: inline-block; width: fit-content; margin: 0 auto; }
-      .creative-row { grid-template-columns: 1fr; gap: 8px; background: none; padding: 12px 0; border-bottom: 1px solid var(--footer-border);}
+      .pair {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .versus {
+        display: inline-block;
+        width: fit-content;
+        margin: 0 auto;
+      }
+      .actions {
+        flex-direction: column;
+      }
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+      .compass-wrap {
+        padding: 1rem;
+      }
+      .compass {
+        border-width: 5px;
+        min-width: 260px;
+        width: 100%;
+      }
+      .compass-outer-label {
+        font-size: 0.85rem;
+      }
+      .tick {
+        font-size: 0.75rem;
+        padding: 2px 5px;
+        border-width: 1.5px;
+      }
+      .marker {
+        width: 18px;
+        height: 18px;
+        border-width: 2px;
+        box-shadow: 0 0 0 2px var(--text-primary);
+      }
+      input, .actions button, .mode-switch button {
+        font-size: 1rem;
+        padding: 12px 12px;
+      }
+      .pair label {
+        font-size: 0.9rem;
+      }
+      .direction {
+        font-size: 0.7rem;
+      }
+      .summary, .base64-status {
+        font-size: 0.85rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .lead {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .marker {
+        width: 16px;
+        height: 16px;
+        border-width: 2px;
+        box-shadow: 0 0 0 1.5px var(--text-primary);
+      }
+      .compass {
+        border-width: 4px;
+      }
     }
   </style>
 </head>
 <body>
 <main class="container">
   <div class="header-top">
-    <div><h1>NeoAutystyk Kompas 4.0</h1><p class="lead">Tryby: domyślny (wagi/jednakowe), instytucjonalny (9 par) oraz kreatywny (wszystkie wartości, wybór osi, wagi, własne etykiety)</p></div>
-    <button class="theme-toggle" id="themeToggle">🌙 Tryb ciemny</button>
+    <div>
+      <h1>NeoAutystyk Kompas</h1>
+      <p class="lead">Wprowadź wartości 0–100. Każda para działa jak przeciąganie liny – liczy się różnica między stronami. Puste lub niekompletne pary są pomijane.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Przełącz motyw">🌙 Tryb ciemny</button>
   </div>
+
   <div class="layout">
+    <!-- LEWA KOLUMNA: sterowanie + formularz -->
     <div>
       <section class="controls">
         <div class="base64-box">
-          <label>📎 Kod z wynikami (Base64)</label>
-          <textarea id="base64Input" placeholder="Wklej kod..."></textarea>
+          <label for="base64Input">📎 Kod z wynikami</label>
+          <textarea id="base64Input" placeholder="Wklej kod z wynikami (Base64)"></textarea>
           <p class="base64-status" id="base64Status"></p>
         </div>
-        <div class="mode-switch" id="modeSwitch">
-          <button data-mode="weighted">⚖️ Wagowy</button>
-          <button data-mode="equal">📏 Jednakowe</button>
-          <button data-mode="institutional">🏢 Instytucjonalny</button>
-          <button data-mode="creative">🎨 Kreatywny</button>
+        <div class="mode-switch" role="group" aria-label="Tryb obliczeń">
+          <button type="button" class="active" data-mode="weighted">⚖️ Tryb wagowy</button>
+          <button type="button" data-mode="equal">📏 Jednakowe wagi</button>
         </div>
         <div class="actions">
-          <button class="primary" id="calculateBtn">⟳ Oblicz wynik</button>
-          <button id="resetBtn">🗑 Reset</button>
+          <button type="button" class="primary" id="calculateBtn">⟳ Oblicz wynik</button>
+          <button type="button" id="resetBtn">🗑 Zresetuj</button>
         </div>
       </section>
+
       <form class="form-panel" id="valuesForm">
-        <div id="formDynamic"></div>
+        <h2 class="axis-title">⚖️ Oś X: ekonomiczna</h2>
+        <div id="xPairs"></div>
+        <h2 class="axis-title">🏛️ Oś Y: społeczno-instytucjonalna</h2>
+        <div id="yPairs"></div>
       </form>
-      <div id="creativePanelContainer" style="display: none;"></div>
     </div>
-    <aside>
-      <section class="compass-wrap">
-        <div class="compass-frame" id="compassFrame">
+
+    <!-- PRAWA KOLUMNA: kompas + wyniki -->
+    <aside class="stage" id="stageArea">
+      <section class="compass-wrap" id="compassSection">
+        <div class="compass-frame">
           <div></div>
-          <div class="compass-outer-label top" id="labelTop">Heteronomia</div>
+          <div class="compass-outer-label top">Heteronomia</div>
           <div></div>
-          <div class="compass-outer-label left" id="labelLeft">Socjalizm</div>
+          <div class="compass-outer-label left">Socjalizm</div>
           <div class="compass" id="compass">
-            <span class="tick x-min">-10</span><span class="tick x-max">+10</span>
-            <span class="tick y-min">-10</span><span class="tick y-max">+10</span>
+            <span class="tick x-min">-10</span>
+            <span class="tick x-max">+10</span>
+            <span class="tick y-min">-10</span>
+            <span class="tick y-max">+10</span>
             <span class="tick center">0</span>
-            <div class="marker" id="marker"></div>
+            <div class="marker" id="marker" title="Twoja pozycja"></div>
           </div>
-          <div class="compass-outer-label right" id="labelRight">Kapitalizm</div>
+          <div class="compass-outer-label right">Kapitalizm</div>
           <div></div>
-          <div class="compass-outer-label bottom" id="labelBottom">Autonomia</div>
+          <div class="compass-outer-label bottom">Autonomia</div>
           <div></div>
         </div>
       </section>
-      <section class="results">
+
+      <section class="results" aria-live="polite">
         <div class="result-grid">
-          <div class="metric"><span>⬌ X</span><strong id="xResult">0.00</strong></div>
-          <div class="metric"><span>⬍ Y</span><strong id="yResult">0.00</strong></div>
+          <div class="metric"><span>⬌ Współrzędna X</span><strong id="xResult">0.00</strong></div>
+          <div class="metric"><span>⬍ Współrzędna Y</span><strong id="yResult">0.00</strong></div>
           <div class="metric"><span>⚙️ Tryb</span><strong id="modeResult">Wagowy</strong></div>
           <div class="metric"><span>🔗 Aktywne pary</span><strong id="activePairsResult">0</strong></div>
         </div>
-        <p class="summary" id="positionResult"></p>
+        <p class="summary" id="positionResult">📍 Położenie: środek kompasu.</p>
       </section>
     </aside>
   </div>
-  <footer><p>Autor: @CusterKnuckle | Wszystkie pary w trybie kreatywnym</p></footer>
+
+  <footer>
+    <p>Wersja robocza, przed ponownym nadejściem Mypolitics <br> <a href="https://x.com/CusterKnuckle" target="_blank" rel="noopener noreferrer">Autor: @CusterKnuckle</a></p>
+  </footer>
 </main>
 
 <script>
-  // ---------- DEFINICJA WSZYSTKICH PAR ----------
-  const allPairs = [
-    // oryginalne (instytucjonalne oznaczone flagą)
-    { id: "prywatn-kolektyw", axis: "x", positiveLabel: "Własność prywatna", negativeLabel: "Własność kolektywna", weight: 1.5, institutional: true },
-    { id: "rynek-plan", axis: "x", positiveLabel: "Rynek", negativeLabel: "Planowanie", weight: 1, institutional: true },
-    { id: "regul-samoreg", axis: "y", positiveLabel: "Regulacja instytucjonalna", negativeLabel: "Samoregulacja", weight: 1, institutional: true },
-    { id: "etatyzm-samoorgan", axis: "y", positiveLabel: "Etatyzm", negativeLabel: "Samoorganizacja", weight: 1.75, institutional: true },
-    { id: "central-decentr", axis: "y", positiveLabel: "Centralizacja", negativeLabel: "Decentralizacja", weight: 1, institutional: true },
-    { id: "absolutyzm-ogran", axis: "y", positiveLabel: "Absolutyzm władzy", negativeLabel: "Ograniczenie władzy", weight: 1.75, institutional: true },
-    { id: "uniform-roznorm", axis: "y", positiveLabel: "Uniformizacja norm", negativeLabel: "Różnorodność norm", weight: 1, institutional: true },
-    { id: "kontrola-granic", axis: "y", positiveLabel: "Kontrola granic", negativeLabel: "Minimalizacja granic", weight: 0.5, institutional: true },
-    { id: "cenzura-wolnosc", axis: "y", positiveLabel: "Cenzura", negativeLabel: "Wolność ekspresji", weight: 1, institutional: true },
-    // dodatkowe (nieinstytucjonalne, ale widoczne w trybie domyślnym i kreatywnym)
-    { id: "hetero-autonomia", axis: "y", positiveLabel: "Heteronomia", negativeLabel: "Autonomia", weight: 2 },
-    { id: "organ-kontrakt", axis: "y", positiveLabel: "Organicyzm", negativeLabel: "Kontraktualizm", weight: 1.5 },
-    { id: "obowiazk-dobrow", axis: "y", positiveLabel: "Obowiązkowość wspólnoty", negativeLabel: "Dobrowolność wspólnoty", weight: 1.5 },
-    { id: "sakr-desakr", axis: "y", positiveLabel: "Sakralizacja autorytetu", negativeLabel: "Desakralizacja autorytetu", weight: 1.75 },
-    // NOWE PARY (tylko w trybie kreatywnym)
-    { id: "indyw-kolektyw", axis: "x", positiveLabel: "Indywidualizm", negativeLabel: "Kolektywizm", weight: 1, creativeOnly: true },
-    { id: "egalitar-hierar", axis: "y", positiveLabel: "Egalitaryzm", negativeLabel: "Hierarchiczność", weight: 1, creativeOnly: true },
-    { id: "demokr-antydem", axis: "y", positiveLabel: "Demokracja", negativeLabel: "Anty-demokracja", weight: 1, creativeOnly: true },
-    { id: "autokr-antyaut", axis: "y", positiveLabel: "Autokracja", negativeLabel: "Anty-autokracja", weight: 1, creativeOnly: true },
-    { id: "ogran-swob-wym", axis: "x", positiveLabel: "Ograniczanie wymiany", negativeLabel: "Swobodna wymiana", weight: 1, creativeOnly: true },
-    { id: "kosmopol-partyk", axis: "y", positiveLabel: "Kosmopolityzm", negativeLabel: "Partykularyzm narodowy", weight: 1, creativeOnly: true },
-    { id: "interw-izolac", axis: "y", positiveLabel: "Interwencjonizm zagraniczny", negativeLabel: "Izolacjonizm", weight: 1, creativeOnly: true },
-    { id: "silaprzem-bezprzem", axis: "y", positiveLabel: "Preferencja użycia siły", negativeLabel: "Unikanie przemocy", weight: 1, creativeOnly: true },
-    { id: "rewol-gradual", axis: "y", positiveLabel: "Rewolucja", negativeLabel: "Gradualizm", weight: 1, creativeOnly: true },
-    { id: "progres-konserw", axis: "y", positiveLabel: "Progresywizm", negativeLabel: "Konserwatyzm", weight: 1, creativeOnly: true },
-    { id: "pluralizm-homogen", axis: "y", positiveLabel: "Pluralizm kulturowy", negativeLabel: "Homogenizacja", weight: 1, creativeOnly: true },
-    { id: "neutral-relig", axis: "y", positiveLabel: "Neutralność religijna", negativeLabel: "Instytucjonalna religia", weight: 1, creativeOnly: true },
-    { id: "wlacz-wyklucz", axis: "y", positiveLabel: "Włączanie", negativeLabel: "Wykluczenie", weight: 1, creativeOnly: true },
-    { id: "egalbio-suprem", axis: "y", positiveLabel: "Egalitaryzm biologiczny", negativeLabel: "Suprematyzm biologiczny", weight: 1, creativeOnly: true },
-    { id: "antropo-ekocent", axis: "y", positiveLabel: "Antropocentryzm", negativeLabel: "Ekocentryzm", weight: 1, creativeOnly: true },
-    { id: "postep-prymityw", axis: "y", positiveLabel: "Postęp technologiczny", negativeLabel: "Prymitywizm", weight: 1, creativeOnly: true }
+  // ---------- DANE (pary oryginalne) ----------
+  const pairs = [
+    { axis: "x", positiveLabel: "Własność prywatna", positiveSide: "prawo", negativeLabel: "Własność kolektywna", negativeSide: "lewo", weight: 1.5, aliases: ["Własność kolektywa"] },
+    { axis: "x", positiveLabel: "Rynek", positiveSide: "prawo", negativeLabel: "Planowanie", negativeSide: "lewo", weight: 1 },
+    { axis: "y", positiveLabel: "Regulacja instytucjonalna", positiveSide: "góra", negativeLabel: "Samoregulacja", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Heteronomia", positiveSide: "góra", negativeLabel: "Autonomia", negativeSide: "dół", weight: 2 },
+    { axis: "y", positiveLabel: "Organicyzm", positiveSide: "góra", negativeLabel: "Kontraktualizm", negativeSide: "dół", weight: 1.5 },
+    { axis: "y", positiveLabel: "Obowiązkowość wspólnoty", positiveSide: "góra", negativeLabel: "Dobrowolność wspólnoty", negativeSide: "dół", weight: 1.5 },
+    { axis: "y", positiveLabel: "Cenzura", positiveSide: "góra", negativeLabel: "Wolność ekspresji", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Etatyzm", positiveSide: "góra", negativeLabel: "Samoorganizacja", negativeSide: "dół", weight: 1.75 },
+    { axis: "y", positiveLabel: "Centralizacja", positiveSide: "góra", negativeLabel: "Decentralizacja", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Absolutyzm władzy", positiveSide: "góra", negativeLabel: "Ograniczenie władzy", negativeSide: "dół", weight: 1.75 },
+    { axis: "y", positiveLabel: "Sakralizacja autorytetu", positiveSide: "góra", negativeLabel: "Desakralizacja autorytetu", negativeSide: "dół", weight: 1.75 },
+    { axis: "y", positiveLabel: "Uniformizacja norm", positiveSide: "góra", negativeLabel: "Różnorodność norm", negativeSide: "dół", weight: 1 },
+    { axis: "y", positiveLabel: "Kontrola granic", positiveSide: "góra", negativeLabel: "Minimalizacja granic", negativeSide: "dół", weight: 0.5 }
   ];
 
-  let state = { mode: "weighted" };
-  let creativeConfig = {};      // dla trybu kreatywnego: mapa id -> { enabled, axis, weight }
-  let customLabels = { top: "Heteronomia", bottom: "Autonomia", left: "Socjalizm", right: "Kapitalizm" };
-  let inputValues = new Map();  // przechowuje wartości pól (positive/negative) dla każdego id pary
+  // STAN
+  const state = { mode: "weighted", x: 0, y: 0, activePairs: 0 };
 
   // DOM
-  const formDynamic = document.getElementById("formDynamic");
-  const creativeContainer = document.getElementById("creativePanelContainer");
-  const base64Input = document.getElementById("base64Input");
-  const base64Status = document.getElementById("base64Status");
-  const marker = document.getElementById("marker");
-  const xResult = document.getElementById("xResult");
-  const yResult = document.getElementById("yResult");
-  const modeResultSpan = document.getElementById("modeResult");
-  const activePairsResultSpan = document.getElementById("activePairsResult");
-  const positionResultSpan = document.getElementById("positionResult");
+  const form = document.querySelector("#valuesForm");
+  const base64Input = document.querySelector("#base64Input");
+  const base64Status = document.querySelector("#base64Status");
+  const xPairsContainer = document.querySelector("#xPairs");
+  const yPairsContainer = document.querySelector("#yPairs");
+  const marker = document.querySelector("#marker");
+  const xResult = document.querySelector("#xResult");
+  const yResult = document.querySelector("#yResult");
+  const modeResult = document.querySelector("#modeResult");
+  const activePairsResult = document.querySelector("#activePairsResult");
+  const positionResult = document.querySelector("#positionResult");
+  const modeButtons = document.querySelectorAll("[data-mode]");
+  const compassSection = document.getElementById("compassSection");
 
-  // Helper: zwraca listę par dla danego trybu
-  function getPairsForMode() {
-    if (state.mode === "institutional") return allPairs.filter(p => p.institutional === true);
-    if (state.mode === "creative") return allPairs; // wszystkie pary
-    // domyślne (weighted/equal): wszystkie pary, ale bez creativeOnly
-    return allPairs.filter(p => !p.creativeOnly);
+  // RENDER PAR
+  function renderPairs() {
+    pairs.forEach((pair, index) => {
+      pair.id = `pair-${index}`;
+      const weightLabel = pair.weight !== 1 ? ` | waga ${pair.weight}` : " | waga 1";
+      const html = `
+        <div class="pair">
+          <label>
+            <span>${pair.negativeLabel}</span>
+            <span class="direction">${pair.negativeSide}${weightLabel}</span>
+            <input type="number" min="0" max="100" step="1" inputmode="numeric" data-pair="${pair.id}" data-side="negative" aria-label="${pair.negativeLabel}">
+          </label>
+          <span class="versus">⇄</span>
+          <label>
+            <span>${pair.positiveLabel}</span>
+            <span class="direction">${pair.positiveSide}${weightLabel}</span>
+            <input type="number" min="0" max="100" step="1" inputmode="numeric" data-pair="${pair.id}" data-side="positive" aria-label="${pair.positiveLabel}">
+          </label>
+        </div>
+      `;
+      if (pair.axis === "x") xPairsContainer.insertAdjacentHTML("beforeend", html);
+      if (pair.axis === "y") yPairsContainer.insertAdjacentHTML("beforeend", html);
+    });
   }
 
-  // Budowanie formularza na podstawie bieżącego trybu
-  function rebuildForm() {
-    const pairs = getPairsForMode();
-    formDynamic.innerHTML = "";
-    const xPairs = pairs.filter(p => p.axis === "x");
-    const yPairs = pairs.filter(p => p.axis === "y");
-    if (xPairs.length) formDynamic.insertAdjacentHTML("beforeend", '<h2 class="axis-title">⚖️ Oś X: ekonomiczna</h2>');
-    xPairs.forEach(p => appendPairHtml(p));
-    if (yPairs.length) formDynamic.insertAdjacentHTML("beforeend", '<h2 class="axis-title">🏛️ Oś Y: społeczno-instytucjonalna</h2>');
-    yPairs.forEach(p => appendPairHtml(p));
-    // przywróć zapisane wartości
-    for (let [pairId, vals] of inputValues.entries()) {
-      const posInp = document.querySelector(`[data-pair="${pairId}"][data-side="positive"]`);
-      const negInp = document.querySelector(`[data-pair="${pairId}"][data-side="negative"]`);
-      if (posInp && vals.pos !== undefined) posInp.value = vals.pos;
-      if (negInp && vals.neg !== undefined) negInp.value = vals.neg;
-    }
+  function parsePairValue(pairId, side) {
+    const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
+    if (!input) return null;
+    const rawValue = input.value.trim();
+    if (rawValue === "") return null;
+    const value = Number(rawValue);
+    if (!Number.isFinite(value)) return null;
+    return Math.min(100, Math.max(0, value));
   }
 
-  function appendPairHtml(pair) {
-    const weightInfo = (state.mode === "creative" || state.mode === "weighted" || state.mode === "institutional") ? `waga ${pair.weight}` : "waga 1";
-    const html = `
-      <div class="pair">
-        <label><span>${pair.negativeLabel}</span><span class="direction">lewo/dół · ${weightInfo}</span>
-        <input type="number" min="0" max="100" step="1" data-pair="${pair.id}" data-side="negative"></label>
-        <span class="versus">⇄</span>
-        <label><span>${pair.positiveLabel}</span><span class="direction">prawo/góra · ${weightInfo}</span>
-        <input type="number" min="0" max="100" step="1" data-pair="${pair.id}" data-side="positive"></label>
-      </div>`;
-    formDynamic.insertAdjacentHTML("beforeend", html);
+  function setPairInput(pairId, side, value) {
+    const input = form.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
+    if (input) input.value = String(Math.min(100, Math.max(0, value)));
   }
 
+  // POPRAWIAM: jeśli wartość jest pusta, czyścimy również pole przeciwne
   function syncOppositeValue(input) {
-    const pairId = input.dataset.pair;
-    const side = input.dataset.side;
-    const opposite = side === "positive" ? "negative" : "positive";
-    const oppositeInput = document.querySelector(`[data-pair="${pairId}"][data-side="${opposite}"]`);
-    const raw = input.value.trim();
-    if (raw === "") {
+    const rawValue = input.value.trim();
+    const oppositeSide = input.dataset.side === "positive" ? "negative" : "positive";
+    const oppositeInput = form.querySelector(`[data-pair="${input.dataset.pair}"][data-side="${oppositeSide}"]`);
+    
+    if (rawValue === "") {
+      // Usunięto wartość – czyścimy również pole przeciwne
       if (oppositeInput) oppositeInput.value = "";
       return;
     }
-    let val = Number(raw);
-    if (isNaN(val)) return;
-    val = Math.min(100, Math.max(0, val));
-    input.value = val;
-    if (oppositeInput) oppositeInput.value = 100 - val;
-    // zapisz
-    if (!inputValues.has(pairId)) inputValues.set(pairId, {});
-    const store = inputValues.get(pairId);
-    store[side] = val;
-    store[opposite] = 100 - val;
+    
+    const value = Number(rawValue);
+    if (!Number.isFinite(value)) return;
+    const clamped = Math.min(100, Math.max(0, value));
+    // Ustawiamy bieżące pole na poprawną wartość
+    input.value = String(clamped);
+    // Uzupełniamy przeciwne jako 100 - clamped, ale tylko jeśli przeciwne pole nie jest puste? 
+    // Zawsze uzupełniamy, bo to synchronizacja.
+    if (oppositeInput) oppositeInput.value = String(100 - clamped);
   }
 
-  function getPairValue(pairId, side) {
-    const inp = document.querySelector(`[data-pair="${pairId}"][data-side="${side}"]`);
-    if (!inp) return null;
-    const raw = inp.value.trim();
-    if (raw === "") return null;
-    let v = Number(raw);
-    if (isNaN(v)) return null;
-    return Math.min(100, Math.max(0, v));
+  // BASE64
+  function decodeBase64Text(base64Value) {
+    const cleaned = base64Value.replace(/\s+/g, "");
+    const binary = atob(cleaned);
+    const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0));
+    return new TextDecoder("utf-8").decode(bytes);
   }
 
-  // Obliczenia zależne od trybu
-  function calculateResult() {
-    let pairs = getPairsForMode();
-    let xSum = 0, xMaxSum = 0, ySum = 0, yMaxSum = 0;
-    let active = 0;
+  function normalizeLabel(label) {
+    return label.trim().toLowerCase().replace(/\s+/g, " ");
+  }
 
-    for (let pair of pairs) {
-      let pos = getPairValue(pair.id, "positive");
-      let neg = getPairValue(pair.id, "negative");
-      if (pos === null || neg === null) continue;
-
-      let weight = 1;
-      let axis = pair.axis;
-      // W trybie kreatywnym stosujemy konfigurację
-      if (state.mode === "creative" && creativeConfig[pair.id]) {
-        const cfg = creativeConfig[pair.id];
-        if (!cfg.enabled) continue;
-        weight = cfg.weight;
-        axis = cfg.axis;
-      } else {
-        if (state.mode === "equal") weight = 1;
-        else weight = pair.weight; // weighted lub institutional
-      }
-      const diff = pos - neg;
-      const contribution = diff * weight;
-      const maxContrib = 100 * weight;
-      if (axis === "x") { xSum += contribution; xMaxSum += maxContrib; active++; }
-      else if (axis === "y") { ySum += contribution; yMaxSum += maxContrib; active++; }
+  function parseAxisValues(decodedText) {
+    const values = new Map();
+    const pattern = /([^();]+?)\s*\(\s*(-?\d+(?:[.,]\d+)?)\s*\)/g;
+    let match;
+    while ((match = pattern.exec(decodedText)) !== null) {
+      const label = normalizeLabel(match[1]);
+      const num = Number(match[2].replace(",", "."));
+      if (Number.isFinite(num)) values.set(label, Math.min(100, Math.max(0, num)));
     }
-    const x = xMaxSum > 0 ? (xSum / xMaxSum) * 10 : 0;
-    const y = yMaxSum > 0 ? (ySum / yMaxSum) * 10 : 0;
-    state.x = Math.min(10, Math.max(-10, x));
-    state.y = Math.min(10, Math.max(-10, y));
-    state.activePairs = active;
-    updateCompass();
-    updateResults();
+    return values;
+  }
+
+  function findParsedValue(parsedMap, label) {
+    return parsedMap.get(normalizeLabel(label));
+  }
+
+  function applyParsedValues(parsedMap) {
+    let matched = 0;
+    form.reset();
+    pairs.forEach(pair => {
+      const posVal = findParsedValue(parsedMap, pair.positiveLabel);
+      let negVal = findParsedValue(parsedMap, pair.negativeLabel);
+      if (negVal === undefined && pair.aliases) {
+        for (let alias of pair.aliases) {
+          if (negVal === undefined) negVal = findParsedValue(parsedMap, alias);
+        }
+      }
+      if (posVal === undefined && negVal === undefined) return;
+      if (posVal !== undefined && negVal !== undefined) {
+        setPairInput(pair.id, "positive", posVal);
+        setPairInput(pair.id, "negative", negVal);
+        matched++;
+      } else if (posVal !== undefined) {
+        setPairInput(pair.id, "positive", posVal);
+        setPairInput(pair.id, "negative", 100 - posVal);
+        matched++;
+      } else if (negVal !== undefined) {
+        setPairInput(pair.id, "negative", negVal);
+        setPairInput(pair.id, "positive", 100 - negVal);
+        matched++;
+      }
+    });
+    return matched;
+  }
+
+  function importBase64Values() {
+    const raw = base64Input.value.trim();
+    if (raw === "") {
+      base64Status.textContent = "";
+      return;
+    }
+    try {
+      const decoded = decodeBase64Text(raw);
+      const parsed = parseAxisValues(decoded);
+      const matched = applyParsedValues(parsed);
+      calculateResult();
+      base64Status.textContent = `✔️ Wczytano ${matched} pasujących par.`;
+      base64Status.classList.remove("error");
+    } catch (err) {
+      base64Status.textContent = "❌ Nie udało się odczytać kodu z wynikami.";
+      base64Status.classList.add("error");
+    }
+  }
+
+  function getPairInfluence(pair) {
+    const pos = parsePairValue(pair.id, "positive");
+    const neg = parsePairValue(pair.id, "negative");
+    if (pos === null || neg === null) return null;
+    const weight = state.mode === "weighted" ? pair.weight : 1;
+    const diff = pos - neg;
+    return { value: diff * weight, max: 100 * weight };
+  }
+
+  function normalizeAxisScore(sum, maxSum) {
+    return maxSum > 0 ? (sum / maxSum) * 10 : 0;
+  }
+
+  function calculateAxis(axis) {
+    let sum = 0, maxSum = 0, active = 0;
+    pairs.filter(p => p.axis === axis).forEach(pair => {
+      const infl = getPairInfluence(pair);
+      if (infl === null) return;
+      sum += infl.value;
+      maxSum += infl.max;
+      active++;
+    });
+    return { score: normalizeAxisScore(sum, maxSum), active };
+  }
+
+  function clampCompass(v) {
+    return Math.min(10, Math.max(-10, v));
+  }
+
+  function getPositionName(x, y) {
+    if (x === 0 && y === 0) return "środek kompasu";
+    if (x >= 0 && y >= 0) return "prawa góra, ćwiartka niebieska";
+    if (x >= 0 && y < 0) return "prawy dół, ćwiartka żółta";
+    if (x < 0 && y >= 0) return "lewa góra, ćwiartka czerwona";
+    return "lewy dół, ćwiartka czarna";
   }
 
   function updateCompass() {
@@ -824,157 +912,101 @@
   function updateResults() {
     xResult.textContent = state.x.toFixed(2);
     yResult.textContent = state.y.toFixed(2);
-    let modeName = { weighted:"Wagowy", equal:"Jednakowe", institutional:"Instytucjonalny", creative:"Kreatywny" }[state.mode];
-    modeResultSpan.textContent = modeName;
-    activePairsResultSpan.textContent = state.activePairs;
-    if (state.activePairs === 0) positionResultSpan.innerHTML = "⚠️ Brak aktywnych par (punkt w środku)";
-    else positionResultSpan.innerHTML = `📍 Położenie: ${describePosition(state.x, state.y)}`;
-  }
-
-  function describePosition(x,y) {
-    if (x===0 && y===0) return "środek";
-    if (x>=0 && y>=0) return "prawa góra (niebieska)";
-    if (x>=0 && y<0) return "prawy dół (żółta)";
-    if (x<0 && y>=0) return "lewa góra (czerwona)";
-    return "lewy dół (czarna)";
-  }
-
-  // Inicjalizacja configu kreatywnego
-  function initCreativeConfig() {
-    const all = allPairs;
-    for (let p of all) {
-      if (!creativeConfig[p.id]) {
-        creativeConfig[p.id] = { enabled: true, axis: p.axis, weight: p.weight };
-      }
+    modeResult.textContent = state.mode === "weighted" ? "Wagowy" : "Jednakowe";
+    activePairsResult.textContent = String(state.activePairs);
+    if (state.activePairs === 0) {
+      positionResult.innerHTML = "⚠️ Położenie: brak pełnych par, punkt pozostaje w środku.";
+      positionResult.classList.add("error");
+    } else {
+      positionResult.innerHTML = `📍 Położenie: ${getPositionName(state.x, state.y)}.`;
+      positionResult.classList.remove("error");
     }
   }
 
-  function renderCreativePanel() {
-    if (state.mode !== "creative") { creativeContainer.style.display = "none"; return; }
-    creativeContainer.style.display = "block";
-    creativeContainer.innerHTML = `<div class="creative-panel"><h3>🎛️ Konfiguracja kreatywna (wybór osi, wagi)</h3>
-      <div class="creative-config-grid" id="creativeGrid"></div>
-      <div class="labels-editor">
-        <input type="text" id="labelTopEdit" placeholder="Góra (Heteronomia)" value="${customLabels.top}">
-        <input type="text" id="labelBottomEdit" placeholder="Dół (Autonomia)" value="${customLabels.bottom}">
-        <input type="text" id="labelLeftEdit" placeholder="Lewo (Socjalizm)" value="${customLabels.left}">
-        <input type="text" id="labelRightEdit" placeholder="Prawo (Kapitalizm)" value="${customLabels.right}">
-        <button id="applyLabelsBtn" class="primary" style="margin-top:8px;">Zastosuj etykiety</button>
-      </div></div>`;
-    const grid = document.getElementById("creativeGrid");
-    for (let pair of allPairs) {
-      const cfg = creativeConfig[pair.id] || { enabled: true, axis: pair.axis, weight: pair.weight };
-      const row = document.createElement("div");
-      row.className = "creative-row";
-      row.innerHTML = `
-        <label><input type="checkbox" class="creative-enabled" data-id="${pair.id}" ${cfg.enabled ? "checked" : ""}> <span>${pair.negativeLabel} ⇄ ${pair.positiveLabel}</span></label>
-        <select class="creative-axis" data-id="${pair.id}"><option value="x" ${cfg.axis==="x"?"selected":""}>Oś X</option><option value="y" ${cfg.axis==="y"?"selected":""}>Oś Y</option></select>
-        <input type="number" step="0.1" class="creative-weight" data-id="${pair.id}" value="${cfg.weight}">
-        <span style="font-size:0.7rem;">waga</span>`;
-      grid.appendChild(row);
-    }
-    document.querySelectorAll(".creative-enabled").forEach(cb => cb.addEventListener("change", (e) => { creativeConfig[e.target.dataset.id].enabled = e.target.checked; calculateResult(); }));
-    document.querySelectorAll(".creative-axis").forEach(sel => sel.addEventListener("change", (e) => { creativeConfig[e.target.dataset.id].axis = e.target.value; calculateResult(); }));
-    document.querySelectorAll(".creative-weight").forEach(inp => inp.addEventListener("input", (e) => { let v = parseFloat(e.target.value); if(!isNaN(v)) creativeConfig[e.target.dataset.id].weight = v; calculateResult(); }));
-    document.getElementById("applyLabelsBtn").addEventListener("click", () => {
-      customLabels.top = document.getElementById("labelTopEdit").value || "Heteronomia";
-      customLabels.bottom = document.getElementById("labelBottomEdit").value || "Autonomia";
-      customLabels.left = document.getElementById("labelLeftEdit").value || "Socjalizm";
-      customLabels.right = document.getElementById("labelRightEdit").value || "Kapitalizm";
-      document.getElementById("labelTop").innerText = customLabels.top;
-      document.getElementById("labelBottom").innerText = customLabels.bottom;
-      document.getElementById("labelLeft").innerText = customLabels.left;
-      document.getElementById("labelRight").innerText = customLabels.right;
-    });
-  }
-
-  // Base64 (importuje wartości do wszystkich par obecnych w aktualnym formularzu)
-  function importBase64() {
-    const raw = base64Input.value.trim();
-    if (!raw) { base64Status.textContent = ""; return; }
-    try {
-      const decoded = atob(raw.replace(/\s/g, ""));
-      const pairsNow = getPairsForMode();
-      const regex = /([^();]+?)\s*\(\s*(-?\d+(?:[.,]\d+)?)\s*\)/g;
-      let match, parsed = new Map();
-      while ((match = regex.exec(decoded))) {
-        let label = match[1].trim().toLowerCase();
-        let val = parseFloat(match[2].replace(",","."));
-        if (!isNaN(val)) parsed.set(label, Math.min(100,Math.max(0,val)));
-      }
-      let matched = 0;
-      for (let p of pairsNow) {
-        let posVal = parsed.get(p.positiveLabel.toLowerCase());
-        let negVal = parsed.get(p.negativeLabel.toLowerCase());
-        if (posVal !== undefined && negVal !== undefined) {
-          setPairInputs(p.id, posVal, negVal);
-          matched++;
-        } else if (posVal !== undefined) { setPairInputs(p.id, posVal, 100-posVal); matched++; }
-        else if (negVal !== undefined) { setPairInputs(p.id, 100-negVal, negVal); matched++; }
-      }
-      base64Status.textContent = `✔️ Wczytano ${matched} par.`;
-      calculateResult();
-    } catch(e) { base64Status.textContent = "❌ Błędny kod."; }
-  }
-  function setPairInputs(pairId, pos, neg) {
-    const posInp = document.querySelector(`[data-pair="${pairId}"][data-side="positive"]`);
-    const negInp = document.querySelector(`[data-pair="${pairId}"][data-side="negative"]`);
-    if (posInp) posInp.value = Math.min(100,Math.max(0,pos));
-    if (negInp) negInp.value = Math.min(100,Math.max(0,neg));
-    if (!inputValues.has(pairId)) inputValues.set(pairId,{});
-    inputValues.get(pairId).pos = pos; inputValues.get(pairId).neg = neg;
+  function calculateResult() {
+    const xAxis = calculateAxis("x");
+    const yAxis = calculateAxis("y");
+    state.x = clampCompass(xAxis.score);
+    state.y = clampCompass(yAxis.score);
+    state.activePairs = xAxis.active + yAxis.active;
+    updateCompass();
+    updateResults();
   }
 
   function resetAll() {
-    const allInputs = document.querySelectorAll("#valuesForm input");
-    allInputs.forEach(inp => inp.value = "");
-    inputValues.clear();
+    form.reset();
     base64Input.value = "";
     base64Status.textContent = "";
-    calculateResult();
-  }
-  function changeMode(mode) {
-    state.mode = mode;
-    document.querySelectorAll("#modeSwitch button").forEach(btn => btn.classList.toggle("active", btn.dataset.mode === mode));
-    if (mode === "creative") initCreativeConfig();
-    rebuildForm();
-    if (mode === "creative") renderCreativePanel();
-    else creativeContainer.style.display = "none";
-    // przywróć etykiety domyślne lub kreatywne
-    if (mode !== "creative") {
-      document.getElementById("labelTop").innerText = "Heteronomia";
-      document.getElementById("labelBottom").innerText = "Autonomia";
-      document.getElementById("labelLeft").innerText = "Socjalizm";
-      document.getElementById("labelRight").innerText = "Kapitalizm";
-    } else {
-      document.getElementById("labelTop").innerText = customLabels.top;
-      document.getElementById("labelBottom").innerText = customLabels.bottom;
-      document.getElementById("labelLeft").innerText = customLabels.left;
-      document.getElementById("labelRight").innerText = customLabels.right;
-    }
+    base64Status.classList.remove("error");
     calculateResult();
   }
 
-  // EVENTY
-  document.querySelectorAll("#modeSwitch button").forEach(btn => btn.addEventListener("click", () => changeMode(btn.dataset.mode)));
-  document.getElementById("calculateBtn").addEventListener("click", () => calculateResult());
-  document.getElementById("resetBtn").addEventListener("click", resetAll);
-  base64Input.addEventListener("input", importBase64);
-  formDynamic.addEventListener("input", (e) => {
-    if (e.target.matches("input")) {
-      syncOppositeValue(e.target);
-      calculateResult();
+  function setMode(nextMode) {
+    state.mode = nextMode;
+    modeButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.mode === nextMode);
+    });
+    calculateResult();
+  }
+
+  // MOTYW (CIEMNY / JASNY)
+  const themeToggle = document.getElementById("themeToggle");
+  function setTheme(theme) {
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+      themeToggle.innerHTML = "☀️ Tryb jasny";
+      localStorage.setItem("kompas-theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      themeToggle.innerHTML = "🌙 Tryb ciemny";
+      localStorage.setItem("kompas-theme", "light");
+    }
+  }
+  const savedTheme = localStorage.getItem("kompas-theme");
+  if (savedTheme === "dark") setTheme("dark");
+  else setTheme("light");
+  themeToggle.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark");
+    setTheme(isDark ? "light" : "dark");
+  });
+
+  // AUTOMATYCZNE OBLICZANIE + SYNCHRONIZACJA przy każdej zmianie pól
+  function autoCalculateHandler(e) {
+    calculateResult();
+  }
+  
+  function syncHandler(e) {
+    const target = e.target;
+    if (target.matches("input")) syncOppositeValue(target);
+  }
+
+  // INICJALIZACJA I EVENTY
+  renderPairs();
+  calculateResult();
+
+  form.addEventListener("input", (e) => {
+    // Najpierw synchronizacja (obsługa pól)
+    syncHandler(e);
+    // Potem przeliczenie wyników
+    autoCalculateHandler(e);
+  });
+  
+  // Przycisk "Oblicz wynik" – przewija do kompasu (dla wygody)
+  const calculateBtn = document.querySelector("#calculateBtn");
+  calculateBtn.addEventListener("click", () => {
+    calculateResult();
+    if (compassSection) {
+      compassSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
-  document.getElementById("themeToggle").addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-    document.getElementById("themeToggle").innerHTML = isDark ? "☀️ Tryb jasny" : "🌙 Tryb ciemny";
-    localStorage.setItem("kompas-theme", isDark ? "dark" : "light");
+  
+  document.querySelector("#resetBtn").addEventListener("click", resetAll);
+  base64Input.addEventListener("input", () => {
+    importBase64Values();
   });
-  if (localStorage.getItem("kompas-theme") === "dark") document.body.classList.add("dark");
-  // start
-  changeMode("weighted");
+  modeButtons.forEach(btn => {
+    btn.addEventListener("click", () => setMode(btn.dataset.mode));
+  });
 </script>
 </body>
 </html>
