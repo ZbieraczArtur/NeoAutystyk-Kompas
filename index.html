@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>NeoAutystyk Kompas - Wielotrybowy</title>
+  <title>NeoAutystyk Kompas</title>
   <style>
     * {
       margin: 0;
@@ -451,34 +451,18 @@
       transform: translateY(-50%);
     }
 
-    .tick {
-      position: absolute;
-      z-index: 5;
-      background: var(--card-bg);
-      border: 2px solid var(--text-primary);
-      padding: 2px 6px;
-      font-size: 0.7rem;
-      font-weight: 900;
-      border-radius: 20px;
-      color: var(--text-primary);
-    }
-
-    .tick.x-min { left: 4px; top: calc(50% + 8px); }
-    .tick.x-max { right: 4px; top: calc(50% + 8px); }
-    .tick.y-min { bottom: 4px; left: calc(50% + 8px); }
-    .tick.y-max { top: 4px; left: calc(50% + 8px); }
-    .tick.center { left: calc(50% + 8px); top: calc(50% + 8px); }
+    /* Usunięto znaczniki z cyframi (+10, -10, 0) */
 
     .marker {
       position: absolute;
       left: 50%;
       top: 50%;
       z-index: 8;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       border: 3px solid #ffffff;
       background: #00ff88;
-      box-shadow: 0 0 0 3px var(--text-primary);
+      box-shadow: 0 0 0 2px var(--text-primary);
       transform: translate(-50%, -50%);
       transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       border-radius: 0px;
@@ -640,14 +624,9 @@
         min-width: 260px;
         width: 100%;
       }
-      .tick {
-        font-size: 0.75rem;
-        padding: 2px 5px;
-        border-width: 1.5px;
-      }
       .marker {
-        width: 18px;
-        height: 18px;
+        width: 16px;
+        height: 16px;
         border-width: 2px;
         box-shadow: 0 0 0 2px var(--text-primary);
       }
@@ -723,11 +702,7 @@
           <div></div>
           <div class="compass-outer-label left" id="compassLabelLeft">Socjalizm</div>
           <div class="compass" id="compass">
-            <span class="tick x-min">-10</span>
-            <span class="tick x-max">+10</span>
-            <span class="tick y-min">-10</span>
-            <span class="tick y-max">+10</span>
-            <span class="tick center">0</span>
+            <!-- Usunięto znaczniki z cyframi -->
             <div class="marker" id="marker"></div>
           </div>
           <div class="compass-outer-label right" id="compassLabelRight">Kapitalizm</div>
@@ -756,7 +731,7 @@
 
 <script>
   // --------------------------------------------------------------
-  // DEFINICJE PAR (bez zmian)
+  // DEFINICJE PAR
   // --------------------------------------------------------------
   const corePairs = [
     { id: "p1", axis: "x", negativeLabel: "Własność kolektywna", positiveLabel: "Własność prywatna", weight: 1.5, institutional: true, extra: false, aliases: ["Własność kolektywa"] },
@@ -795,7 +770,6 @@
 
   const allPairs = [...corePairs, ...extraPairs];
 
-  // GLOBALNY STAN WARTOŚCI
   let globalValues = {};
   allPairs.forEach(pair => {
     globalValues[pair.id] = { positive: null, negative: null };
@@ -810,9 +784,6 @@
 
   function getPairById(id) { return allPairs.find(p => p.id === id); }
 
-  // --------------------------------------------------------------
-  // RENDER FORMULARZA (bez zmian w logice)
-  // --------------------------------------------------------------
   function getPairsForCurrentMode() {
     if (currentMode === "weighted") return corePairs.filter(p => !p.extra);
     if (currentMode === "equal") return corePairs.filter(p => !p.extra);
@@ -937,9 +908,6 @@
     calculateResult();
   }
 
-  // --------------------------------------------------------------
-  // OBLICZENIA (bez zmian)
-  // --------------------------------------------------------------
   function getPairInfluenceFromDOM(pairId, weightValue) {
     const pairDiv = document.querySelector(`.pair[data-pair-id="${pairId}"]`);
     if (!pairDiv) return null;
@@ -1013,9 +981,6 @@
     return "lewy dół, ćwiartka czarna";
   }
 
-  // --------------------------------------------------------------
-  // BASE64 IMPORT (bez zmian)
-  // --------------------------------------------------------------
   function decodeBase64Text(base64Value) {
     const cleaned = base64Value.replace(/\s+/g, "");
     const binary = atob(cleaned);
@@ -1084,9 +1049,6 @@
     }
   }
 
-  // --------------------------------------------------------------
-  // RESET
-  // --------------------------------------------------------------
   function resetAll() {
     allPairs.forEach(pair => {
       globalValues[pair.id] = { positive: null, negative: null };
@@ -1098,9 +1060,6 @@
     calculateResult();
   }
 
-  // --------------------------------------------------------------
-  // TRYB KREATYWNY (bez zmian w logice)
-  // --------------------------------------------------------------
   function renderCreativeConfigPanel() {
     const container = document.getElementById("creativePairsList");
     container.innerHTML = "";
@@ -1171,9 +1130,6 @@
     document.getElementById("compassLabelRight").innerText = creativeConfig.labels.right;
   }
 
-  // --------------------------------------------------------------
-  // ZMIANA TRYBU
-  // --------------------------------------------------------------
   function setMode(mode) {
     currentMode = mode;
     document.querySelectorAll(".mode-switch button").forEach(btn => {
@@ -1191,9 +1147,6 @@
     calculateResult();
   }
 
-  // --------------------------------------------------------------
-  // MOTYW
-  // --------------------------------------------------------------
   const themeToggle = document.getElementById("themeToggle");
   function setTheme(theme) {
     if (theme === "dark") {
@@ -1212,9 +1165,6 @@
     setTheme(document.body.classList.contains("dark") ? "light" : "dark");
   });
 
-  // --------------------------------------------------------------
-  // EVENTY START
-  // --------------------------------------------------------------
   document.querySelectorAll(".mode-switch button").forEach(btn => {
     btn.addEventListener("click", () => setMode(btn.dataset.mode));
   });
