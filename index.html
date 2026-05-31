@@ -497,21 +497,27 @@
       transform: translateY(-50%);
     }
 
-    /* MARKER (kursor nad wszystkim) */
-    .marker {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      z-index: 8;
-      width: 15px;
-      height: 15px;
-      border: 3px solid #ffffff;
-      background: #00ff88;
-      box-shadow: 0 0 0 2px var(--text-primary);
-      transform: translate(-50%, -50%);
-      transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      border-radius: 0px;
-    }
+
+.marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 8;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #ffffff;
+  background: #00ff88;
+  box-shadow: 0 0 0 2px var(--text-primary);
+  transform: translate(-50%, -50%);
+  transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  border-radius: 0px;
+}
+
+body.dark .marker {
+  border: 3px solid #000000;
+  background: #000000;
+  box-shadow: 0 0 0 2px var(--text-primary);
+}
 
     .result-grid {
       display: grid;
