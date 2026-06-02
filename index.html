@@ -417,7 +417,7 @@
       border: 4px solid var(--text-primary);
       overflow: hidden;
       isolation: isolate;
-      background: #fff; /* zapasowe tło, ale ćwiartki je przykryją */
+      background: #fff;
     }
 
     /* Wspólne cechy wszystkich ćwiartek */
@@ -427,9 +427,8 @@
       height: 50%;
       pointer-events: none;
       z-index: 1;
-      /* Siatka 10x10: każdy gradient tworzy linię, a background-size dzieli obszar na 10x10 komórek */
       background-repeat: repeat;
-      background-size: 10% 10%;  /* 10 x 10 = 100% ćwiartki */
+      background-size: 10% 10%;
     }
 
     /* LEWO GÓRA (lewo góra) */
@@ -497,27 +496,56 @@
       transform: translateY(-50%);
     }
 
+    /* NOWOCZESNY MARKER – OKRĄGŁY, Z POŚWIATĄ, RÓŻNY W TRYBIE JASNYM I CIEMNYM */
+    .marker {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 8;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.2), 0 0 0 5px rgba(255,255,255,0.3);
+      animation: markerPulse 1.5s infinite ease-in-out;
+    }
 
-.marker {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 8;
-  width: 15px;
-  height: 15px;
-  border: 3px solid #ffffff;
-  background: #00ff88;
-  box-shadow: 0 0 0 2px var(--text-primary);
-  transform: translate(-50%, -50%);
-  transition: left 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1), top 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  border-radius: 0px;
-}
+    /* Tryb jasny – marker biały z granatową obwódką i zielonkawą poświatą */
+    body:not(.dark) .marker {
+      background: #ffffff;
+      border: 2px solid #1e293b;
+      box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.3), 0 0 0 6px rgba(34, 197, 94, 0.3);
+    }
 
-body.dark .marker {
-  border: 3px solid #000000;
-  background: #000000;
-  box-shadow: 0 0 0 2px var(--text-primary);
-}
+    /* Tryb ciemny – marker żółty z czarną obwódką i pomarańczową poświatą */
+    body.dark .marker {
+      background: #facc15;
+      border: 2px solid #000000;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5), 0 0 0 6px rgba(249, 115, 22, 0.5);
+    }
+
+    @keyframes markerPulse {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Dla użytkowników, którzy nie lubią animacji – wyłączamy pulsowanie */
+    @media (prefers-reduced-motion: reduce) {
+      .marker {
+        animation: none;
+      }
+    }
 
     .result-grid {
       display: grid;
@@ -678,8 +706,6 @@ body.dark .marker {
       .marker {
         width: 16px;
         height: 16px;
-        border-width: 2px;
-        box-shadow: 0 0 0 2px var(--text-primary);
       }
       input,
       .actions button,
